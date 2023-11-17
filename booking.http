@@ -1,0 +1,12 @@
+### POST BOOKING
+POST http://localhost:3000/booking HTTP/1.1
+content-type: application/json
+
+{
+    "conselor_id": "5f8f7f2d0f7a7e2b3c6f8b5d",
+    "kode_pembayaran": "kjnda123123",
+    "tanggal_konseling": "2020-12-12"
+}
+
+### GET BOOKING
+GET http://localhost:3000/booking HTTP/1.1
