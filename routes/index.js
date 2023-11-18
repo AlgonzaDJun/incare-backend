@@ -1,9 +1,10 @@
 const express = require("express");
 const { bookingRouter } = require("./booking.route");
-const { conselorRouter } = require("./conselor.route");
+const { reviewRouter } = require("./review.route");
+
 const router = express.Router();
 
 router.use("/booking", bookingRouter);
-router.use("/conselor", conselorRouter);
+router.use("/review", reviewRouter);
 
 module.exports = router;

@@ -82,4 +82,74 @@ module.exports = {
       });
     }
   },
+
+  updateReviewById: async (req, res) => {
+    const conselor_id = req.params.conselor_id;
+    const review_id = req.params.id;
+
+    const { user_id, rate, comment } = req.body;
+
+    if (!rate) {
+      return res.status(400).json({
+        message: "Rate is required",
+      });
+    } else if (!comment) {
+      return res.status(400).json({
+        message: "Comment is required",
+      });
+    } else if (!user_id) {
+      return res.status(400).json({
+        message: "User id is required",
+      });
+    }
+
+    try {
+      let review = await Conselor.findById(conselor_id).select({
+        rate: { $elemMatch: { _id: review_id } },
+      });
+
+      if (!review) {
+        return res.status(404).json({
+          message: "Review not found",
+        });
+      }
+
+      const updateReview = await Conselor.findOneAndUpdate(
+        {
+          _id: conselor_id,
+          "rate._id": review_id,
+        },
+        {
+          $set: {
+            "rate.$.rate": rate,
+            "rate.$.comment": comment,
+          },
+        },
+        {
+          new: true,
+        }
+      );
+
+      if (!review) {
+        return res.status(404).json({
+          message: "Review not found",
+        });
+      }
+
+      res.status(200).json({
+        message: "Success update review by conselor id",
+        data: updateReview.rate.filter((item) => item._id == review_id),
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Failed to update review by conselor id",
+        error: error.message,
+      });
+    }
+  },
+
+  deleteReviewById: async (req, res) => {
+    const conselor_id = req.params.conselor_id;
+    const review_id = req.params.id;
+  },
 };
