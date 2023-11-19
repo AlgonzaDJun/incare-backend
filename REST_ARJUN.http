@@ -15,6 +15,9 @@ GET http://localhost:3000/booking HTTP/1.1
 ### POST NEW CONSELOR
 POST http://localhost:3000/conselor HTTP/1.1
 
+### GET REVIEW BY CONSELOR ID
+GET http://localhost:3000/review/6558c65b3f681a2ef5a895d1 HTTP/1.1
+
 ### POST NEW RATE by conselor id
 POST http://localhost:3000/review/6558c65b3f681a2ef5a895d1 HTTP/1.1
 Content-Type: application/json
@@ -26,12 +29,12 @@ Content-Type: application/json
 }
 
 ### UPDATE RATE BY ID
-PUT http://localhost:3000/review/6558c65b3f681a2ef5a895d1/6558d3f319a853080f5f7251 HTTP/1.1
+PUT http://localhost:3000/review/6558c65b3f681a2ef5a895d1/6559ab38ec5a0b4ec143d29a HTTP/1.1
 Content-Type: application/json
 
 {
-    "rate" : 5,
-    "comment": "bagus",
+    "rate" : 1,
+    "comment": "jelek banget",
     "user_id" : "5f8f7f2d0f7a7e2b3c6f8b5d"
 }
 
