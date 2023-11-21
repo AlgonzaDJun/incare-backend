@@ -1,5 +1,6 @@
 const Conselor = require("../models/conselor");
 
+// example of conselor data
 const conselors = [{
     id: 1,
     fullname: "Mark Lee",
