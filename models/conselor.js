@@ -1,13 +1,34 @@
 const mongoose = require("mongoose");
 
-const conselorSchema = new mongoose.Schema({
-    user_id: {
-        type: mongoose.ObjectId,
-        ref: "User"
+const rateSchema = new mongoose.Schema(
+    {
+      user_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      rate: Number,
+      comment: String,
     },
-    spesialisasi: String,
-})
+    {
+      timestamps: true,
+    }
+  );
+  
+  const ConselorSchema = new mongoose.Schema(
+    {
+      user_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      spesialisasi: String,
+      status: String,
+      rate: [rateSchema],
+    },
+    {
+      timestamps: true,
+    }
+  );
 
-const Conselor = mongoose.model("Conselor", conselorSchema)
+const Conselor = mongoose.model("Conselor", ConselorSchema)
 
 module.exports = Conselor

@@ -31,7 +31,7 @@ const registConselor = async (req, res) => {
             message: "all fields are required"
         })
     }
-    const newConselor = { id: conselors.length + 1, user_id, spesialisasi };
+    const newConselor = { user_id, spesialisasi };
     await Conselor.create(newConselor);
     conselors.push(newConselor);
  
