@@ -18,7 +18,7 @@ const bookingSchema = new Schema(
     kode_pembayaran: String,
     status: {
       type: String,
-      enum: ["pending", "success", "failed"],
+      enum: ["pending", "success", "failed", "canceled"],
     },
   },
   {

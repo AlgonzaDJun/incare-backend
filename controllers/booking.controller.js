@@ -47,4 +47,48 @@ module.exports = {
       });
     }
   },
+
+  updateBooking: async (req, res) => {
+    const { id } = req.params;
+
+    const { status, tanggal_konseling } = req.body;
+
+    try {
+      const data = await Booking.findByIdAndUpdate(
+        { _id: id },
+        {
+          status,
+          tanggal_konseling,
+        }
+      );
+
+      res.json({
+        message: "Booking berhasil diupdate",
+        data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Terjadi error",
+        error: error.message,
+      });
+    }
+  },
+
+  deleteBooking : async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const data = await Booking.findByIdAndDelete({ _id: id });
+
+      res.json({
+        message: "Booking berhasil dihapus",
+        data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Terjadi error",
+        error: error.message,
+      });
+    }
+  }
 };
