@@ -1,5 +1,6 @@
-const User = require("../models/user")
-const jwt = require("jsonwebtoken")
+const bcrypt = require("bcrypt");
+const User = require("../models/user");
+const jwt = require("jsonwebtoken");
 const { config } = require("dotenv");
 config();
 
@@ -9,18 +10,23 @@ const login = async(req, res) => {
     const { email, password } = data;
 
     if (!email || !password) {
-        return res.status(400).json({message: "masukan email dan password"});
+        return res.status(400).json({message: "Enter Your Email and Password"});
     }
 
     try {
         const user = await User.findOne({ email: data.email });
 
         if (!user) {
-            return res.json({ message: "email atau password salah. Silakan coba lagi! "});
+            return res.json({ message: "The email or password is incorrect. Please try again!"});
         }
 
-        if(user.password !== data.password) {
-            return res.json({ message: "password salah"})
+        //compare password user with hashpassword
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+
+        if (!isPasswordValid) {
+            return res.json({
+                message: "invalid password"
+            })
         }
 
         const token = jwt.sign({id: user._id, email: user.email}, "treasure")
@@ -44,8 +50,12 @@ const register = async (req, res) => {
     const { username, fullname, email, no_hp, password } = data;
 
     if (!username || !fullname || !email || !no_hp || !password) {
-        return res.status(400).json({message: "semua field harus diisi"});
+        return res.status(400).json({message: "All fields are required!"});
     }
+
+    //hash password
+    const hashPassword = bcrypt.hashSync(data.password, 10)
+    data.password = hashPassword
 
     const user = await User.create(data)
 

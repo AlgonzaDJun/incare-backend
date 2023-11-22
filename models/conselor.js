@@ -23,6 +23,7 @@ const rateSchema = new mongoose.Schema(
       spesialisasi: String,
       status: String,
       rate: [rateSchema],
+      jadwal: [Date]
     },
     {
       timestamps: true,

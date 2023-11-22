@@ -1,18 +1,19 @@
 const Conselor = require("../models/conselor");
 
-// example of conselor data
-const conselors = [{
-    id: 1,
-    fullname: "Mark Lee",
-    spesialisasi: "Mental Health",
-    rating: 4.9,
-    image_url: "./photo.jpg",
-    jadwal: [{ "hari": "", "tanggal": "" }],
-},
+// // example of conselor data
+// const conselors = [{
+//     id: 1,
+//     fullname: "Mark Lee",
+//     spesialisasi: "Mental Health",
+//     rating: 4.9,
+//     image_url: "./photo.jpg",
+//     jadwal: [{ "hari": "", "tanggal": "" }],
+// },
+// ];
 
-];
-const getConselor = (req, res) => {
-    const conselorsData = conselors.map(({ id, jadwal, ...rest }) => rest);
+const getConselor = async (req, res) => {
+    // const conselorsData = await Conselor.map(({ jadwal, ...rest }) => rest);
+    const conselorsData = await Conselor.find();
     
         res.status(200).json({
           status: "OK",
@@ -24,16 +25,15 @@ const getConselor = (req, res) => {
 const registConselor = async (req, res) => {
     let data = req.body;
 
-    const { user_id, spesialisasi } = data;
+    const { user_id, spesialisasi, jadwal } = data;
 
-    if(!user_id || !spesialisasi) {
+    if(!user_id || !spesialisasi || !jadwal ) {
         return res.status(400).json({
             message: "all fields are required"
         })
     }
-    const newConselor = { user_id, spesialisasi };
+    const newConselor = ({ user_id, spesialisasi, jadwal: new Date });
     await Conselor.create(newConselor);
-    conselors.push(newConselor);
  
     res.status(201).json({
         status: "OK",
@@ -43,8 +43,8 @@ const registConselor = async (req, res) => {
   };
 
 const getConselorById = async (req, res) => {
-    const { id } = req.params;
-    const conselor = conselors.find(conselors => conselors.id == parseInt(id));
+    const {id} = req.params;
+    const conselor = await Conselor.findById(id);
 
    if (!conselor) {
     return res.status(400).json({
