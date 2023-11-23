@@ -2,7 +2,6 @@ const Conselor = require("../models/conselor");
 const authToken = require("../middlewares/auth")
 
 const getConselor = async (req, res) => {
-    // const conselorsData = await Conselor.map(({ jadwal, ...rest }) => rest);
     const conselorsData = await Conselor.find();
     
         res.status(200).json({

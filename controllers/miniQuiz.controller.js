@@ -21,10 +21,12 @@ const createAnswer = async (req, res) => {
         })
      }
 
-     await hasilQuiz.create({
-        user: user_id,
-        quiz: newQuiz._id
-     })
+        await hasilQuiz.create({
+        user_id: user_id,
+        results: [newQuiz],
+        score: newQuiz.score,
+        mood: "Neutral"
+    });
 
     res.status(200).json({
         message:"Your Response is Accepted",
@@ -36,17 +38,17 @@ const createAnswer = async (req, res) => {
 const resultQuiz = async (req, res) => { 
    const { id } = req.params
 
-  const userResult= await hasilQuiz.find({user_id:id})
+  const userResult= await hasilQuiz.findOne({user_id:id})
 
-   if(!userResult){
+   if(!userResult || !userResult.results || userResult.results.length === 0){
     return res.status(404).json({
         message: "No quiz result found for this user"
     })
    }
 
-   let totalScore = 10;
-   for (const result of userResult) {
-    totalScore += result.quiz
+   let totalScore = 0;
+   for (const quiz of userResult.results) {
+    totalScore += quiz.score || 0;
    }
 
    let mood = "Neutral";
@@ -61,7 +63,7 @@ const resultQuiz = async (req, res) => {
    res.status(200).json({
     status: "OK",
     message: "Your Result",
-    userResult,
+    userResult: userResult.results,
     score: totalScore,
     mood: mood
    })
