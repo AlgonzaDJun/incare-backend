@@ -1,15 +1,5 @@
 const Conselor = require("../models/conselor");
-
-// // example of conselor data
-// const conselors = [{
-//     id: 1,
-//     fullname: "Mark Lee",
-//     spesialisasi: "Mental Health",
-//     rating: 4.9,
-//     image_url: "./photo.jpg",
-//     jadwal: [{ "hari": "", "tanggal": "" }],
-// },
-// ];
+const authToken = require("../middlewares/auth")
 
 const getConselor = async (req, res) => {
     // const conselorsData = await Conselor.map(({ jadwal, ...rest }) => rest);
@@ -32,6 +22,13 @@ const registConselor = async (req, res) => {
             message: "all fields are required"
         })
     }
+
+    if (!authToken) {
+        return res.status(400).json({
+            message: "invalid token or user"
+        })
+    }
+
     const newConselor = ({ user_id, spesialisasi, jadwal: new Date });
     await Conselor.create(newConselor);
  

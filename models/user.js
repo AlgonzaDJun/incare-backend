@@ -6,7 +6,10 @@ const userSchema = new mongoose.Schema({
     email: String,
     no_hp: String,
     password: String,
-    mood: String
+    mood: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "hasilQuiz"
+    }
 })
 
 const User = mongoose.model("User", userSchema)

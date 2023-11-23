@@ -1,0 +1,52 @@
+### POST REGISTER
+POST localhost:3000/auth/register
+{
+    "status": "OK",
+    "message": "Account created successfully",
+    "data": {
+        "username": "kiming",
+        "fullname": "Kim Mingyu",
+        "email": "kiming@gmail.com",
+        "no_hp": "089242139492",
+        "password": "$2b$10$SDBqLKdV8JR.HYFrIf5msurgURSyenPV5fsO53WyAYCrBWI3dqojy",
+        "_id": "655f4975dce10db540026322",
+        "__v": 0
+    }
+}
+
+### POST LOGIN
+localhost:3000/auth/login
+
+### REGIST CONSELOR
+localhost:3000/conselors/asconselor
+
+### GET CONSELOR
+localhost:3000/conselors/getconselor
+
+### GET CONSELORBYID
+localhost:3000/conselors/655f061f96f7992755471037
+
+### POST CREATEANSWER
+localhost:3000/quizzes/quiz
+{
+    "message": "Your Response is Accepted",
+    "data": {
+        "user_id": "655f03d35eb2695f455cfda9",
+        "questions": "maneh kumaha damang",
+        "answers": [
+            "damang"
+        ],
+        "_id": "655f39d03e98a1930cc462db",
+        "__v": 0
+    }
+}
+
+### GET HASILQUIZ
+localhost:3000/hasilquizzes/655f03d35eb2695f455cfda9
+
+### GET USER
+localhost:3000/users
+
+### GET USERBYID
+localhost:3000/users/655f4975dce10db540026322
+

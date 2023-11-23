@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+require("dotenv").config()
 
 const authToken = (req, res, next) => {
     const header = req.headers.authorization;
@@ -20,6 +21,7 @@ const authToken = (req, res, next) => {
     try {
         const verified = jwt.verify(token, "treasure");
         req.user = verified;
+
         next();
     } catch(error) {
         res.status(400).json({
@@ -28,6 +30,4 @@ const authToken = (req, res, next) => {
     }
 };
 
-module.exports = {
-    authToken,
-}
+module.exports = authToken
