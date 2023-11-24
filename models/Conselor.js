@@ -24,6 +24,12 @@ const ConselorSchema = new Schema(
     spesialisasi: String,
     status: String,
     rate: [rateSchema],
+    schedule: [
+      {
+        day: String,
+        time: String,
+      },
+    ],
   },
   {
     timestamps: true,

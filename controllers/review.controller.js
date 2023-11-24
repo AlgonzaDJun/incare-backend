@@ -26,6 +26,12 @@ module.exports = {
         user_id: "5f9d9c2b3a2f5e0b5c3f7f8a",
         spesialisasi: "Psikolog",
         status: "on",
+        schedule: [
+          {
+            day: "Senin",
+            time: "19:00 - 20:00",
+          },
+        ],
       });
 
       res.json({
@@ -151,5 +157,40 @@ module.exports = {
   deleteReviewById: async (req, res) => {
     const conselor_id = req.params.conselor_id;
     const review_id = req.params.id;
+
+    try {
+      const review = await Conselor.findOneAndUpdate(
+        {
+          _id: conselor_id,
+          "rate._id": review_id,
+        },
+        {
+          $pull: {
+            rate: {
+              _id: review_id,
+            },
+          },
+        },
+        {
+          new: true,
+        }
+      );
+
+      if (!review) {
+        return res.status(404).json({
+          message: "Review not found",
+        });
+      }
+
+      res.status(200).json({
+        message: "Success delete review by conselor id",
+        data: review,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Failed to delete review by conselor id",
+        error: error.message,
+      });
+    }
   },
 };
