@@ -30,10 +30,13 @@ const login = async(req, res) => {
         }
 
         const token = jwt.sign({id: user._id, email: user.email}, "treasure")
+
+        res.setHeader("authorization", `Bearer ${token}`);
         
         res.status(200).json({
             status: "OK",
             message: "User Autenticate Successfully",
+            userId: user._id,
             token,
         })
     } catch(error){

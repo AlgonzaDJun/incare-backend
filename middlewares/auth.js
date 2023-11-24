@@ -10,7 +10,7 @@ const authToken = (req, res, next) => {
         });
     }
 
-    const token = header.split("")[1];
+    const token = header.split(" ")[1];
 
     if(!token){
         return res.status(401).json({

@@ -1,5 +1,6 @@
 const Conselor = require("../models/conselor");
-const authToken = require("../middlewares/auth")
+const authToken = require("../middlewares/auth");
+const User = require("../models/user");
 
 const getConselor = async (req, res) => {
     const conselorsData = await Conselor.find();
@@ -28,7 +29,7 @@ const registConselor = async (req, res) => {
         })
     }
 
-    const newConselor = ({ user_id, spesialisasi, jadwal: new Date });
+    const newConselor = ({ user_id, spesialisasi, jadwal: new Date() });
     await Conselor.create(newConselor);
  
     res.status(201).json({
