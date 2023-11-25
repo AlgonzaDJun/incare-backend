@@ -1,0 +1,43 @@
+### POST BOOKING
+POST http://localhost:3000/booking HTTP/1.1
+content-type: application/json
+
+{
+    "conselor_id": "5f8f7f2d0f7a7e2b3c6f8b5d",
+    "kode_pembayaran": "kjnda123123",
+    "tanggal_konseling": "2020-12-12"
+}
+
+### GET BOOKING
+GET http://localhost:3000/booking HTTP/1.1
+
+
+### POST NEW CONSELOR
+POST http://localhost:3000/review/conselor HTTP/1.1
+
+### GET REVIEW BY CONSELOR ID
+GET http://localhost:3000/review/6560731aeeb6528b4fbd8bb2 HTTP/1.1
+
+### POST NEW RATE by conselor id
+POST http://localhost:3000/review/6560731aeeb6528b4fbd8bb2 HTTP/1.1
+Content-Type: application/json
+
+{
+    "user_id" : "5f8f7f2d0f7a7e2b3c6f8b5d",
+    "rate": 1,
+    "comment": "Jelek konselor nya"
+}
+
+### UPDATE RATE BY ID
+PUT http://localhost:3000/review/6558c65b3f681a2ef5a895d1/6559ab38ec5a0b4ec143d29a HTTP/1.1
+Content-Type: application/json
+
+{
+    "rate" : 1,
+    "comment": "jelek banget",
+    "user_id" : "5f8f7f2d0f7a7e2b3c6f8b5d"
+}
+
+
+### DELETE REVIEW BY ID
+DELETE http://localhost:3000/review/6560731aeeb6528b4fbd8bb2/65609d35d0fa74e1ac5d9194 HTTP/1.1

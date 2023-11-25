@@ -7,6 +7,7 @@ const { allRouter } = require("./routes");
 config();
 
 const PORT = process.env.PORT;
+const allRoutes = require("./routes");
 
 const app = express();
 mongo
