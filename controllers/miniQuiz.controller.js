@@ -21,12 +21,12 @@ const createAnswer = async (req, res) => {
         })
      }
 
-        await hasilQuiz.create({
-        user_id: user_id,
-        results: [newQuiz],
-        score: newQuiz.score,
-        mood: "Neutral"
-    });
+    //     await hasilQuiz.create({
+    //     user_id: user_id,
+    //     results: [newQuiz],
+    //     score: newQuiz.score,
+    //     mood: "Neutral"
+    // });
 
     res.status(200).json({
         message:"Your Response is Accepted",
