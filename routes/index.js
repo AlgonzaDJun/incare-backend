@@ -14,6 +14,7 @@ route.use("/auth", authRoute);
 route.use("/conselors", conselRoute)
 route.use("/quizzes", quizRoute)
 route.use("/hasilquizzes", quizRoute)
+// route.use("/schedules", conselRoute)
 
 module.exports = {
     allRouter: route,

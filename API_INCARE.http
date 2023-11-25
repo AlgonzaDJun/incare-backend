@@ -50,3 +50,29 @@ localhost:3000/users
 ### GET USERBYID
 localhost:3000/users/655f4975dce10db540026322
 
+### POST SAVESCHEDULE
+localhost:3000/conselors
+{
+    "status": "OK",
+    "message": "Successfully Saved the Counselor's Schedule",
+    "schedule": {
+        "conselor_id": "655f650ebda1ca522a294325",
+        "jadwal": "2023-11-25T19:20:31.172Z"
+    }
+}
+
+### PUT UPDATESCHEDULE
+localhost:3000/conselors/656248ff8001959e7f7f811d
+{
+    "message": "Schedule Updated",
+    "data": {
+        "_id": "656248ff8001959e7f7f811d",
+        "jadwal": [
+            "2023-11-25T19:20:31.172Z"
+        ],
+        "rate": [],
+        "createdAt": "2023-11-25T19:20:31.192Z",
+        "updatedAt": "2023-11-25T19:50:59.576Z",
+        "__v": 0
+    }
+}
