@@ -25,6 +25,15 @@ const createAnswer = async (req, res) => {
     })
 }
 
+const allResultQuiz = async(req, res) => {
+    const allQuiz = await hasilQuiz.find()
+
+    res.json({
+        message: "Berikut daftar user",
+        data: allQuiz
+    })
+}
+
 //Get Result by user id
 const resultQuiz = async (req, res) => { 
    const { id } = req.params
@@ -46,5 +55,6 @@ const resultQuiz = async (req, res) => {
 }
 module.exports = {
     createAnswer,
+    allResultQuiz,
     resultQuiz
 }
