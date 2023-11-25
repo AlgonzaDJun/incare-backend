@@ -43,15 +43,24 @@ Content-Type: application/json
 DELETE http://localhost:3000/review/65617455f242c60a1e550ae5/656174a6f242c60a1e550af5 HTTP/1.1
 
 
-### REGISTER USER
-POST http://localhost:3000/auth/register
-
 content-type: application/json
+### REGISTER 
+POST http://localhost:3000/auth/register HTTP/1.1
+Content-Type: application/json
 
 {
     "username" : "arjun123",
     "fullname" : "arjun dewangga",
     "email" : "rjx1406@gmail.com",
     "no_hp" : "081243367761",
+    "password" : "12345"
+}
+
+### LOGIN 
+POST http://localhost:3000/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email" : "rjx1406@gmail.com",
     "password" : "12345"
 }
