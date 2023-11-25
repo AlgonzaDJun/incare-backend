@@ -17,8 +17,8 @@ route.use("/auth", authRoute);
 route.use("/conselors", conselRoute)
 route.use("/quizzes", quizRoute)
 route.use("/hasilquizzes", quizRoute)
-router.use("/booking", bookingRouter);
-router.use("/review", reviewRouter);
+route.use("/booking", bookingRouter);
+route.use("/review", reviewRouter);
 
 module.exports = {
     allRouter: route,
