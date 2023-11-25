@@ -1,4 +1,4 @@
-const Conselor = require("../models/conselor");
+const Conselor = require("../models/Conselor");
 const authToken = require("../middlewares/auth");
 const User = require("../models/user");
 
