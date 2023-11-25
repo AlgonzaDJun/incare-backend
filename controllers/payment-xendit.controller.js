@@ -1,42 +1,111 @@
-import { Xendit, Invoice as InvoiceClient } from "xendit-node";
+const { Xendit, Invoice: InvoiceClient } = require("xendit-node");
 const dotenv = require("dotenv");
+const User = require("../models/user");
 dotenv.config();
 
 const xenditClient = new Xendit({ secretKey: process.env.XENDIT_KEY });
 const { Invoice } = xenditClient;
 const xenditInvoiceClient = new InvoiceClient({
-  secretKey: YOUR_SECRET_KEY,
+  secretKey: process.env.XENDIT_KEY,
 });
 
 module.exports = {
   createInvoice: async (req, res) => {
-    const user_id = "5f8f7f2d0f7a7e2b3c6f8b5d";
+    const user = req.user;
+
+    const findUser = await User.findById(user.id);
+
+    const user_id = user.id;
+
     try {
-      const external_id = "INCARE-" + user_id + "-" + Math.random();
+      const external_id = "INCARE-" + user_id + "-" + Date.now();
 
-      const { payer_email, description, amount } = req.body;
+      const { description, amount } = req.body;
 
-      const data = {
-        externalID: external_id,
-        payerEmail: payer_email,
-        description: description,
+      const data2 = {
         amount: amount,
+        invoiceDuration: 172800,
+        payerEmail: user.email,
+        externalId: external_id,
+        description: description,
         currency: "IDR",
+        reminderTime: 1,
+
         customer: {
           id: user_id,
+          phoneNumber: findUser.no_hp,
+          givenNames: findUser.fullname,
+          email: findUser.email,
+          mobileNumber: findUser.no_hp,
         },
+
+        items: [
+          {
+            name: "Konseling Online",
+            price: amount,
+            quantity: 1,
+            referenceId: "12345",
+          },
+        ],
+
+        customerNotificationPreference: {
+          invoiceCreated: ["sms", "whatsapp", "email"],
+          invoiceReminder: ["sms", "whatsapp", "email"],
+          invoiceExpired: ["sms", "whatsapp", "email"],
+        },
+
+        successRedirectUrl: "https://www.google.com",
+        failureRedirectUrl: "https://www.google.com",
       };
 
-      const invoice = await xenditInvoiceClient.createInvoice(data);
+      const invoice = await xenditInvoiceClient.createInvoice({ data: data2 });
 
       res.status(200).json({
         message: "Invoice berhasil dibuat",
         data: invoice,
+
+        // user: findUser,
       });
     } catch (error) {
       res.status(500).json({
         message: "Internal server error",
-        error: error,
+        error: error.message,
+      });
+    }
+  },
+
+  getInvoices: async (req, res) => {
+    try {
+      const response = await xenditInvoiceClient.getInvoices({});
+      res.status(200).json({
+        message: "Berhasil mendapatkan data invoice",
+        data: response,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Internal server error",
+        error: error.message,
+      });
+    }
+  },
+
+  getInvoicesById: async (req, res) => {
+    const { id } = req.params;
+
+    // const id = req.query.id;
+    try {
+      const response = await xenditInvoiceClient.getInvoiceById({
+        invoiceId: id,
+      });
+      res.status(200).json({
+        message: "Berhasil mendapatkan data invoice by id",
+        data: response,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Internal server error",
+        error: error.message,
+        id: id,
       });
     }
   },

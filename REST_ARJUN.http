@@ -64,3 +64,13 @@ Content-Type: application/json
     "email" : "rjx1406@gmail.com",
     "password" : "12345"
 }
+
+### PAYMENT 
+POST http://localhost:3000/payment HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NjE3ZTUyZWZkM2RiMDJjY2U5NTA3YiIsImVtYWlsIjoicmp4MTQwNkBnbWFpbC5jb20iLCJpYXQiOjE3MDA4ODkyNjd9.Mb11ZUNwDllKpOWSKki1Wzq4bX5LANxXUpRqwhKSMIU
+Content-Type: application/json
+
+{
+    "description" : "pembayaran konseling",
+    "amount" : 100000
+}
