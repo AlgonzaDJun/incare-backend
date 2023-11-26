@@ -2,10 +2,13 @@ const Booking = require("../models/Booking");
 
 module.exports = {
   createBooking: async (req, res) => {
-    const { conselor_id, tanggal_konseling, kode_pembayaran } = req.body;
+    const { conselor_id, tanggal_konseling, kode_pembayaran, media_konseling } =
+      req.body;
     const user_id = "5f8f7f2d0f7a7e2b3c6f8b5d";
 
-    if (!conselor_id || !kode_pembayaran || !tanggal_konseling) {
+    if (
+      (!conselor_id || !kode_pembayaran || !tanggal_konseling, !media_konseling)
+    ) {
       return res.status(400).json({
         message: "Semua field harus diisi",
       });
@@ -16,6 +19,7 @@ module.exports = {
         user_id,
         conselor_id,
         tanggal_konseling: new Date(),
+        media_konseling,
         kode_pembayaran,
         status: "pending",
       });
@@ -74,7 +78,7 @@ module.exports = {
     }
   },
 
-  deleteBooking : async (req, res) => {
+  deleteBooking: async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -90,5 +94,5 @@ module.exports = {
         error: error.message,
       });
     }
-  }
+  },
 };

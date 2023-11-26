@@ -16,6 +16,10 @@ const bookingSchema = new Schema(
       default: Date.now,
     },
     kode_pembayaran: String,
+    media_konseling: {
+      type: String,
+      enum: ["zoom", "whatsapp", "chat"],
+    },
     status: {
       type: String,
       enum: ["pending", "success", "failed", "canceled"],
