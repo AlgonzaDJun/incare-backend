@@ -1,7 +1,7 @@
 const express = require("express");
 const { registConselor, getConselor, getConselorById, saveSchedule, updateSchedule } = require("../controllers/conselor.controller");
 const authToken = require("../middlewares/auth");
-const route = express.Router()
+const route = express.Router();
 
 route.post("/asconselor", authToken, registConselor)
 route.get("/getconselor", getConselor)
@@ -10,5 +10,5 @@ route.post("/", saveSchedule)
 route.put("/:id", updateSchedule)
 
 module.exports = {
-    conselRoute: route,
-}
+  conselRoute: route,
+};

@@ -1,0 +1,900 @@
+openapi: 3.0.0
+info:
+  title: Aplikasi Konseling API
+  version: 1.0.0
+  description: API untuk Aplikasi Konseling
+
+servers:
+  - url: https://api.example.com/v1
+    description: Production Server
+
+paths:
+  /login:
+    post:
+      summary: Melakukan login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Berhasil login
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "User Autenticate Successfully",
+                  token: "jwt_token",
+                }
+        "404":
+          description: User Not Found
+          content:
+            application/json:
+              example: { status: "Error", message: "User Not Found" }
+
+  /register:
+    post:
+      summary: Melakukan registrasi
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                fullname:
+                  type: string
+                email:
+                  type: string
+                no_hp:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "201":
+          description: Account created successfully
+          content:
+            application/json:
+              example: { status: "OK", message: "Account created successfully" }
+  /counselor:
+    get:
+      summary: Mendapatkan daftar konselor
+
+      responses:
+        "200":
+          description: Mendapatkan daftar konselor
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Get All Conselor Successfully",
+                  counselors:
+                    [
+                      {
+                        "fullname": "Muhamad Saman",
+                        "spesialisasi": "kejiwaan",
+                        "rating": 4.5,
+                        "image_url": "./photo.jpg",
+                      },
+                    ],
+                }
+    post:
+      summary: Register as a Counselor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                speasialisasi:
+                  type: string
+      responses:
+        "201":
+          description: Registering as a Counselor was successful
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Registering as a Counselor was successful",
+                  newData: { "id": 0, user_id: 0, speasialisasi: "string" },
+                }
+  /counselor/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID Konselor
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get details from counselor
+      responses:
+        "200":
+          description: Get detail Counselor Successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Get detail Counselor Successfully",
+                  data:
+                    [
+                      {
+                        "id": 4,
+                        "fullname": "Muhamad Saman",
+                        "spesialisasi": "kejiwaan",
+                        "rating": 4.5,
+                        "image_url": "./photo.jpg",
+                        "jadwal": [{ "hari": "", "tanggal": "" }],
+                      },
+                    ],
+                }
+
+  /review-counselor:
+    post:
+      summary: Memberikan review kepada konselor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                counselor_id:
+                  type: integer
+                rate:
+                  type: integer
+                comment:
+                  type: string
+      responses:
+        "201":
+          description: Review added successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Review added successfully",
+                  newData: { "counselor_id": 0, "rate": 0, "comments" },
+                }
+  /review-counselor/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID Counselor
+        required: true
+        schema:
+          type: integer
+
+    put:
+      summary: Updated review
+      responses:
+        "200":
+          description: Updated review successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Updated review successfully",
+                  UpdatedData: { "counselor_id": 4, "rate": {}, comment: {} },
+                }
+    delete:
+      summary: Delete review
+      responses:
+        "200":
+          description: Deleted review successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Deleted review successfully",
+                  UpdatedData: { "counselor_id": 4, "rate": {}, comment: {} },
+                }
+
+  /chat-history:
+    get:
+      summary: Get History Chat
+
+      responses:
+        "200":
+          description: Get History Chat Successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Get History Chat Successfully",
+                  data:
+                    [
+                      {
+                        "id": 0,
+                        "counselor_name": "string",
+                        user_name:"string",
+                        "chat": "string",
+                      },
+                    ],
+                }
+    post:
+      summary: Memberikan review kepada konselor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                counselor_id:
+                  type: integer
+                user_id:
+                  type: integer
+                chat:
+                  type: string
+      responses:
+        "201":
+          description: History chat added successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "History added successfully",
+                  newData:
+                    {
+                      "id": 0,
+                      "counselor_name": "string",
+                      user_name: "string",
+                      "chat": "string",
+                    },
+                }
+
+  /chat-history{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID Counselor
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get detail history
+      responses:
+        "200":
+          description: Get detail history successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Get detail history successfully",
+                  UpdatedData:
+                    {
+                      "id": 0,
+                      "counselor": "object",
+                      user: "object",
+                      "chat": "string",
+                    },
+                }
+    put:
+      summary: Updated history
+      responses:
+        "200":
+          description: Updated history successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Updated history successfully",
+                  UpdatedData:
+                    {
+                      "id": 0,
+                      "counselor_name": "string",
+                      user_name: "string",
+                      "chat": "string",
+                    },
+                }
+    delete:
+      summary: Delete history
+      responses:
+        "200":
+          description: Deleted history successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Deleted history successfully",
+                  UpdatedData:
+                    {
+                      "id": 0,
+                      "counselor_name": "string",
+                      user_name: "string",
+                      "chat": "string",
+                    },
+                }
+
+  /seminar-pamphlet:
+    get:
+      summary: Mendapatkan pamflet seminar
+      responses:
+        "200":
+          description: Mendapatkan pamflet seminar
+          content:
+            application/json:
+              example:
+                [
+                  {
+                    id: 0,
+                    name: "seminar",
+                    "jadwal": "12-12-2023 12:23:12",
+                    pamphlet: "link_to_pamphlet.pdf",
+                  },
+                ]
+    post:
+      summary: Memberikan review kepada konselor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name::
+                  type: string
+                jadwal:
+                  type: string
+                pamphlet:
+                  type: string
+      responses:
+        "201":
+          description: History chat added successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "History added successfully",
+                  newData: { ? id:0
+                        name
+                      : "seminar", "jadwal": "12-12-2023 12:23:12", pamphlet: "link_to_pamphlet.pdf" },
+                }
+  /seminar-pamphlet{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID Counselor
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get detail seminar
+      responses:
+        "200":
+          description: Get detail seminar successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Get detail seminar successfully",
+                  Data: { ? id:0
+                        name
+                      : "seminar", "jadwal": "12-12-2023 12:23:12", pamphlet: "link_to_pamphlet.pdf" },
+                }
+    put:
+      summary: Updated seminar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name::
+                  type: string
+                jadwal:
+                  type: string
+                pamphlet:
+                  type: string
+      responses:
+        "200":
+          description: Updated seminar successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Updated seminar successfully",
+                  UpdatedData:
+                    {
+                      "id": 0,
+                      "name": "seminar",
+                      "jadwal": "12-12-2023 12:23:12",
+                      pamphlet: "link_to_pamphlet.pdf",
+                    },
+                }
+    delete:
+      summary: Delete seminar
+      responses:
+        "200":
+          description: Deleted seminar successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Deleted seminar successfully",
+                  DeletedData:
+                    {
+                      "id": 0,
+                      "name": "seminar",
+                      "jadwal": "12-12-2023 12:23:12",
+                      pamphlet: "link_to_pamphlet.pdf",
+                    },
+                }
+  /faq:
+    get:
+      summary: Mendapatkan pamflet seminar
+      responses:
+        "200":
+          description: Get All FAQ
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "History added successfully",
+                  Data: [{ id: 0, question: "string", answers: "string" }],
+                }
+    post:
+      summary: Memberikan review kepada konselor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question::
+                  type: string
+                answers::
+                  type: string
+
+      responses:
+        "201":
+          description: faq chat added successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "faq added successfully",
+                  newData: { id: 0, question: "string", answers: "string" },
+                }
+  /faq{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID Counselor
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get detail faq
+      responses:
+        "200":
+          description: Get detail faq successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: Get detail faq successfully,
+                  Data: { id: 0, question: "string", answers: "string" },
+                }
+    put:
+      summary: Updated faq
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                question:
+                  type: string
+                answers::
+                  type: string
+
+      responses:
+        "200":
+          description: Updated faq successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Updated faq successfully",
+                  UpdatedData: { id: 0, question: "string", answers: "string" },
+                }
+    delete:
+      summary: Delete faq
+      responses:
+        "200":
+          description: Deleted faq successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Deleted faq successfully",
+                  DeletedData: { id: 0, question: "string", answers: "string" },
+                }
+  /counselor-booking:
+    get:
+      summary: Mendapatkan pamflet seminar
+      responses:
+        "200":
+          description: Get All FAQ
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "get all counselor booking  successfully",
+                  Data: [{ id: 0, question: "string", answers: "string" }],
+                }
+    post:
+      summary: Melakukan pemesanan konselor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                counselor_id:
+                  type: integer
+                tanggal_konseling:
+                  type: string
+                kode_pembayaran:
+                  type: string
+      responses:
+        "201":
+          description: Pemesanan berhasil
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Counselor booking added successfully",
+                  newData::
+                    {
+                      id: 0,
+                      user_id: 0,
+                      counselor_id: 0,
+                      tanggal_konseling: string,
+                      kode_pembayaran: string,
+                    },
+                }
+  /counselor-booking{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID Counselor
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get detail booking
+      responses:
+        "200":
+          description: Get detail booking successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: Get detail booking successfully,
+                  Data:
+                    {
+                      id: 0,
+                      user_id: 0,
+                      counselor_id: 0,
+                      tanggal_konseling: string,
+                      kode_pembayaran: string,
+                    },
+                }
+    put:
+      summary: Updated booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                counselor_id:
+                  type: integer
+                tanggal_konseling:
+                  type: string
+                kode_pembayaran:
+                  type: string
+      responses:
+        "200":
+          description: Updated booking successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Updated booking successfully",
+                  UpdatedData:
+                    {
+                      id: 0,
+                      user_id: 0,
+                      counselor_id: 0,
+                      tanggal_konseling: string,
+                      kode_pembayaran: string,
+                    },
+                }
+    delete:
+      summary: Delete booking
+      responses:
+        "200":
+          description: Deleted booking successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Deleted booking successfully",
+                  DeletedData:
+                    {
+                      id: 0,
+                      user_id: 0,
+                      counselor_id: 0,
+                      tanggal_konseling: string,
+                      kode_pembayaran: string,
+                    },
+                }
+  /story:
+    get:
+      summary: Mendapatkan pamflet seminar
+      responses:
+        "200":
+          description: Get All FAQ
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "get all story  successfully",
+                  Data:
+                    [
+                      {
+                        id: 0,
+                        user_id: 0,
+                        content: "string",
+                        jumlah_like: 0,
+                        jumlah_comment: 5,
+                      },
+                    ],
+                }
+    post:
+      summary: Melakukan pemesanan konselor
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                content:
+                  type: string
+
+      responses:
+        "201":
+          description: Pemesanan berhasil
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "story added successfully",
+                  newData:: { id: 0, user_id: 0, content: "string" },
+                }
+  /story{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID Counselor
+        required: true
+        schema:
+          type: integer
+    get:
+      summary: Get detail story
+      responses:
+        "200":
+          description: Get detail story successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: Get detail story successfully,
+                  Data:
+                    {
+                      id: 0,
+                      user_id: 0,
+                      content: "string",
+                      like: [{}],
+                      comment: [{}],
+                    },
+                }
+    put:
+      summary: Updated booking
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                content:
+                  type: string
+
+      responses:
+        "200":
+          description: Updated booking successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Updated booking successfully",
+                  UpdatedData:
+                    {
+                      id: 0,
+                      user_id: 0,
+                      content: "string",
+                      like: [{}],
+                      comment: [{}],
+                    },
+                }
+    delete:
+      summary: Delete story
+      responses:
+        "200":
+          description: Deleted story successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Deleted story successfully",
+                  DeletedData:
+                    {
+                      id: 0,
+                      user_id: 0,
+                      content: "string",
+                      like: [{}],
+                      comment: [{}],
+                    },
+                }
+  /like/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID Counselor
+        required: true
+        schema:
+          type: integer
+    put:
+      summary: Updated like
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+      responses:
+        "200":
+          description: Updated booking successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Updated booking successfully",
+                  UpdatedData:
+                    {
+                      id: 0,
+                      user_id: 0,
+                      content: "string",
+                      like: [{}],
+                      comment: [{}],
+                    },
+                }
+  /comment/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID Counselor
+        required: true
+        schema:
+          type: integer
+    put:
+      summary: add comment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                comment:
+                  type: string
+      responses:
+        "200":
+          description: add new comment successfully
+          content:
+            application/json:
+              example:
+                {
+                  status: "OK",
+                  message: "Updated booking successfully",
+                  UpdatedData:
+                    {
+                      id: 0,
+                      user_id: 0,
+                      content: "string",
+                      like: [{}],
+                      comment: [{}],
+                    },
+                }
+  /mini-quiz:
+    post:
+      summary: Mengirim jawaban untuk kuis mini
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                answers:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        "200":
+          description: Jawaban diterima
