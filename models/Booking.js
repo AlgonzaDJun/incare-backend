@@ -20,6 +20,7 @@ const bookingSchema = new Schema(
       type: String,
       enum: ["zoom", "whatsapp", "chat"],
     },
+    link_konseling: Object,
     status: {
       type: String,
       enum: ["pending", "success", "failed", "canceled"],
