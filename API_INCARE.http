@@ -50,3 +50,30 @@ localhost:3000/users
 ### GET USERBYID
 localhost:3000/users/655f4975dce10db540026322
 
+### POST CREATECHAT
+localhost:3000/chats/chat
+{
+  "participants"  : "655f4975dce10db540026322",
+  "chatType": "single"
+}
+
+### POST SENDMESSAGE
+localhost:3000/chats/send
+{
+    "chatId": "6564ebf05af57b54a8b6d399",
+    "sender": "655f4975dce10db540026322",
+    "content": "selamat malam dok"
+}
+
+### GET MESSAGE
+localhost:3000/chats/6564ebf05af57b54a8b6d399
+
+### POST NOTIFIKASI CHAT
+localhost:3000/chats/notif
+{
+   "chatId": "6564ebf05af57b54a8b6d399",
+   "sender": "655f4975dce10db540026322"
+}
+
+### GET ACTIVITY CHAT
+localhost:3000/chats/6564ebf05af57b54a8b6d399/status
