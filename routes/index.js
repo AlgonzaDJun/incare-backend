@@ -15,6 +15,7 @@ route.get("/", (req, res) => {
 });
 route.use("/faqs", faqRoute);
 route.use("/seminars", seminarRoute);
+
 route.use("/users", userRoute);
 route.use("/auth", authRoute);
 route.use("/conselors", conselRoute);

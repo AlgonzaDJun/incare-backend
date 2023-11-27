@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+const OTP = require("../models/otp");
 const { config } = require("dotenv");
 config();
 
@@ -52,18 +53,38 @@ const login = async (req, res) => {
 const register = async (req, res) => {
   let data = req.body;
 
-  const { username, fullname, email, no_hp, password } = data;
+  const { username, fullname, email, no_hp, password, otp } = data;
 
-  if (!username || !fullname || !email || !no_hp || !password) {
+  if (!username || !fullname || !email || !no_hp || !password || !otp) {
     return res.status(400).json({ message: "All fields are required!" });
   }
 
   //hash password
   try {
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "User already exists",
+      });
+    }
+    const response = await OTP.find({ email }).sort({ createdAt: -1 }).limit(1);
+    if (response.length === 0 || otp !== response[0].otp) {
+      return res.status(400).json({
+        success: false,
+        message: "The OTP is not valid",
+      });
+    }
+
     const hashPassword = bcrypt.hashSync(data.password, 10);
     data.password = hashPassword;
-
-    const user = await User.create(data);
+    const user = await User.create({
+      username,
+      fullname,
+      email,
+      no_hp,
+      password,
+    });
 
     res.status(201).json({
       status: "OK",
@@ -74,6 +95,7 @@ const register = async (req, res) => {
     res.status(500).json({
       status: "Error",
       message: "Internal Server Error",
+      error: error.message,
     });
   }
 };
