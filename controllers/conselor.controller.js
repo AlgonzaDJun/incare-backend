@@ -23,14 +23,13 @@ const getConselor = async (req, res) => {
 const registConselor = async (req, res) => {
   let data = req.body;
 
+  const { user_id, spesialisasi } = data;
 
-    const { user_id, spesialisasi } = data;
-
-    if(!user_id || !spesialisasi) {
-        return res.status(400).json({
-            message: "all fields are required"
-        })
-    }
+  if (!user_id || !spesialisasi) {
+    return res.status(400).json({
+      message: "all fields are required",
+    });
+  }
 
   if (!authToken) {
     return res.status(400).json({
@@ -38,8 +37,8 @@ const registConselor = async (req, res) => {
     });
   }
 
-    const newConselor = ({ user_id, spesialisasi});
-
+  const newConselor = { user_id, spesialisasi };
+  try {
     await Conselor.create(newConselor);
 
     res.status(201).json({
@@ -65,59 +64,66 @@ const getConselorById = async (req, res) => {
         message: "undefined conselor",
       });
     }
-    
+
     res.status(200).json({
       status: "OK",
       message: "Get detail Counselor Successfully",
       data: conselor,
     });
-  } 
-
+  } catch (error) {
+    res.status(500).json({
+      status: "Error",
+      message: "Internal Server Error",
+    });
+  }
+};
 
 const saveSchedule = async (req, res) => {
-    let data = req.body;
+  let data = req.body;
 
-    const { conselor_id, jadwal } = data;
+  const { conselor_id, jadwal } = data;
 
-    const schedule = ({ conselor_id, jadwal: new Date()});
+  const schedule = { conselor_id, jadwal: new Date() };
 
-    await Conselor.create(schedule);
+  await Conselor.create(schedule);
 
-    if(!conselor_id || !jadwal) {
-      return res.status(400).json({ 
-        message: "all fields are required"
-      })   
-    }
+  if (!conselor_id || !jadwal) {
+    return res.status(400).json({
+      message: "all fields are required",
+    });
+  }
 
-    res.status(200).json({
-        status: "OK",
-        message: "Successfully Saved the Counselor's Schedule",
-        schedule
-    })
-}
+  res.status(200).json({
+    status: "OK",
+    message: "Successfully Saved the Counselor's Schedule",
+    schedule,
+  });
+};
 
 const updateSchedule = async (req, res) => {
-    const conselorId = req.params.id; //_id nya conselor
-    const data = req.body;
+  const conselorId = req.params.id; //_id nya conselor
+  const data = req.body;
 
-    const editSchedule = await Conselor.findByIdAndUpdate(conselorId, data , { new: true });
+  const editSchedule = await Conselor.findByIdAndUpdate(conselorId, data, {
+    new: true,
+  });
 
-    if (!editSchedule) {
-        return res.status(400).json({
-            message: "Update Schedule Failed"
-        });
-    }
-
-    res.json({
-        message: "Schedule Updated",
-        data: editSchedule
+  if (!editSchedule) {
+    return res.status(400).json({
+      message: "Update Schedule Failed",
     });
+  }
+
+  res.json({
+    message: "Schedule Updated",
+    data: editSchedule,
+  });
 };
 
 module.exports = {
-    registConselor,
-    getConselor,
-    getConselorById,
-    saveSchedule,
-    updateSchedule
-}
+  registConselor,
+  getConselor,
+  getConselorById,
+  saveSchedule,
+  updateSchedule,
+};
