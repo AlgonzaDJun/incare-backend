@@ -39,7 +39,7 @@ const registConselor = async (req, res) => {
   }
 
     const newConselor = ({ user_id, spesialisasi});
-
+  try {
     await Conselor.create(newConselor);
 
     res.status(201).json({
@@ -71,7 +71,13 @@ const getConselorById = async (req, res) => {
       message: "Get detail Counselor Successfully",
       data: conselor,
     });
-  } 
+  } catch (error) {
+    res.status(500).json({
+      status: "Error",
+      message: "Internal Server Error",
+    });
+  }
+  };
 
 
 const saveSchedule = async (req, res) => {
