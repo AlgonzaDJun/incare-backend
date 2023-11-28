@@ -5,6 +5,7 @@ const { quizRoute } = require("./quiz-route");
 const { userRoute } = require("./user-route");
 const { bookingRouter } = require("./booking.route");
 const { reviewRouter } = require("./review.route");
+const { chatRoute } = require("./chat-route");
 const faqRoute = require("./faq");
 const seminarRoute = require("./seminar");
 
@@ -23,6 +24,7 @@ route.use("/quizzes", quizRoute);
 route.use("/hasilquizzes", quizRoute);
 route.use("/booking", bookingRouter);
 route.use("/review", reviewRouter);
+route.use("/chats", chatRoute)
 
 module.exports = {
   allRouter: route,
