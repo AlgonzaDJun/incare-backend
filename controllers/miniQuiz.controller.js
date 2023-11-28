@@ -13,24 +13,24 @@ const createAnswer = async (req, res) => {
         })
        }
 
-     const newQuiz = await Quiz.create(data)
-     const user = await User.findById(user_id)
-     if(!user) {
-        return res.status(404).json({
-            message: "User Not Found"
-        })
-     }
-
-        await hasilQuiz.create({
+     const newQuiz = await Quiz.create({
         user_id: user_id,
-        results: [newQuiz],
-        score: newQuiz.score,
-        mood: "Neutral"
-    });
+        questions: questions,
+        answers: answers,
+     })
 
     res.status(200).json({
         message:"Your Response is Accepted",
         data: newQuiz
+    })
+}
+
+const allResultQuiz = async(req, res) => {
+    const allQuiz = await hasilQuiz.find()
+
+    res.json({
+        message: "Berikut daftar user",
+        data: allQuiz
     })
 }
 
@@ -46,30 +46,15 @@ const resultQuiz = async (req, res) => {
     })
    }
 
-   let totalScore = 0;
-   for (const quiz of userResult.results) {
-    totalScore += quiz.score || 0;
-   }
-
-   let mood = "Neutral";
-   if (totalScore >= 50) {
-       mood = "Happy";
-   } else if (totalScore >= 30) {
-       mood = "Content";
-   } else {
-       mood = "Sad";
-   }
-
    res.status(200).json({
     status: "OK",
     message: "Your Result",
     userResult: userResult.results,
-    score: totalScore,
-    mood: mood
    })
 
 }
 module.exports = {
     createAnswer,
+    allResultQuiz,
     resultQuiz
 }

@@ -26,6 +26,33 @@ localhost:3000/conselors/getconselor
 ### GET CONSELORBYID
 localhost:3000/conselors/655f061f96f7992755471037
 
+### POST SAVESCHEDULE
+localhost:3000/conselors
+{
+    "status": "OK",
+    "message": "Successfully Saved the Counselor's Schedule",
+    "schedule": {
+        "conselor_id": "655f650ebda1ca522a294325",
+        "jadwal": "2023-11-25T19:20:31.172Z"
+    }
+}
+
+### PUT UPDATESCHEDULE
+localhost:3000/conselors/656248ff8001959e7f7f811d
+{
+    "message": "Schedule Updated",
+    "data": {
+        "_id": "656248ff8001959e7f7f811d",
+        "jadwal": [
+            "2023-11-25T19:20:31.172Z"
+        ],
+        "rate": [],
+        "createdAt": "2023-11-25T19:20:31.192Z",
+        "updatedAt": "2023-11-25T19:50:59.576Z",
+        "__v": 0
+    }
+}
+
 ### POST CREATEANSWER
 localhost:3000/quizzes/quiz
 {
@@ -43,6 +70,9 @@ localhost:3000/quizzes/quiz
 
 ### GET HASILQUIZ
 localhost:3000/hasilquizzes/655f03d35eb2695f455cfda9
+
+### GET ALLHASILQUIZ
+localhost:3000/quizzes
 
 ### GET USER
 localhost:3000/users
