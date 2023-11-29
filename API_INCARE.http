@@ -1,0 +1,109 @@
+### POST REGISTER
+POST localhost:3000/auth/register
+{
+    "status": "OK",
+    "message": "Account created successfully",
+    "data": {
+        "username": "kiming",
+        "fullname": "Kim Mingyu",
+        "email": "kiming@gmail.com",
+        "no_hp": "089242139492",
+        "password": "$2b$10$SDBqLKdV8JR.HYFrIf5msurgURSyenPV5fsO53WyAYCrBWI3dqojy",
+        "_id": "655f4975dce10db540026322",
+        "__v": 0
+    }
+}
+
+### POST LOGIN
+localhost:3000/auth/login
+
+### POST REGIST CONSELOR
+localhost:3000/conselors/asconselor
+
+### GET CONSELOR
+localhost:3000/conselors/getconselor
+
+### GET CONSELORBYID
+localhost:3000/conselors/655f061f96f7992755471037
+
+### POST SAVESCHEDULE
+localhost:3000/conselors
+{
+    "status": "OK",
+    "message": "Successfully Saved the Counselor's Schedule",
+    "schedule": {
+        "conselor_id": "655f650ebda1ca522a294325",
+        "jadwal": "2023-11-25T19:20:31.172Z"
+    }
+}
+
+### PUT UPDATESCHEDULE
+localhost:3000/conselors/656248ff8001959e7f7f811d
+{
+    "message": "Schedule Updated",
+    "data": {
+        "_id": "656248ff8001959e7f7f811d",
+        "jadwal": [
+            "2023-11-25T19:20:31.172Z"
+        ],
+        "rate": [],
+        "createdAt": "2023-11-25T19:20:31.192Z",
+        "updatedAt": "2023-11-25T19:50:59.576Z",
+        "__v": 0
+    }
+}
+
+### POST CREATEANSWER
+localhost:3000/quizzes/quiz
+{
+    "message": "Your Response is Accepted",
+    "data": {
+        "user_id": "655f03d35eb2695f455cfda9",
+        "questions": "maneh kumaha damang",
+        "answers": [
+            "damang"
+        ],
+        "_id": "655f39d03e98a1930cc462db",
+        "__v": 0
+    }
+}
+
+### GET HASILQUIZ
+localhost:3000/hasilquizzes/655f03d35eb2695f455cfda9
+
+### GET ALLHASILQUIZ
+localhost:3000/quizzes
+
+### GET USER
+localhost:3000/users
+
+### GET USERBYID
+localhost:3000/users/655f4975dce10db540026322
+
+### POST CREATECHAT
+localhost:3000/chats/chat
+{
+  "participants"  : "655f4975dce10db540026322",
+  "chatType": "single"
+}
+
+### POST SENDMESSAGE
+localhost:3000/chats/send
+{
+    "chatId": "6564ebf05af57b54a8b6d399",
+    "sender": "655f4975dce10db540026322",
+    "content": "selamat malam dok"
+}
+
+### GET MESSAGE
+localhost:3000/chats/6564ebf05af57b54a8b6d399
+
+### POST NOTIFIKASI CHAT
+localhost:3000/chats/notif
+{
+   "chatId": "6564ebf05af57b54a8b6d399",
+   "sender": "655f4975dce10db540026322"
+}
+
+### GET ACTIVITY CHAT
+localhost:3000/chats/6564ebf05af57b54a8b6d399/status
