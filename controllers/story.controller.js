@@ -51,6 +51,11 @@ module.exports = {
   },
 
   getStoryById: async (req, res) => {
+    const header = req.headers.authorization;
+    const token = header.split(" ")[1];
+    const decoded = jwt.verify(token, "treasure");
+    const userId = decoded.id;
+
     const { id } = req.params;
     if (!id) {
       return badRequest(res);
