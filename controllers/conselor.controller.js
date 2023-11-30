@@ -81,43 +81,168 @@ const getConselorById = async (req, res) => {
 const saveSchedule = async (req, res) => {
   let data = req.body;
 
-  const { conselor_id, jadwal } = data;
+  const { conselor_id, day, time } = data;
 
-  const schedule = { conselor_id, jadwal: new Date() };
-
-  await Conselor.create(schedule);
-
-  if (!conselor_id || !jadwal) {
+  if (!conselor_id || !day || !time) {
     return res.status(400).json({
       message: "all fields are required",
     });
   }
 
-  res.status(200).json({
-    status: "OK",
-    message: "Successfully Saved the Counselor's Schedule",
-    schedule,
-  });
+  try {
+    const konselor = await Conselor.findById(conselor_id);
+
+    if (!konselor) {
+      return res.status(400).json({
+        message: "undefined conselor",
+      });
+    }
+
+    const newSchedule = { day, time };
+
+    konselor.schedule.push(newSchedule);
+
+    await konselor.save();
+
+    res.status(200).json({
+      status: "OK",
+      message: "Successfully Saved the Counselor's Schedule",
+      konselor: konselor.schedule,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "Terjadi Error",
+      message: error.message,
+    });
+  }
 };
 
 const updateSchedule = async (req, res) => {
   const conselorId = req.params.id; //_id nya conselor
   const data = req.body;
 
-  const editSchedule = await Conselor.findByIdAndUpdate(conselorId, data, {
-    new: true,
-  });
+  const { day, time, schedule_id } = data;
 
-  if (!editSchedule) {
+  // const editSchedule = await Conselor.findByIdAndUpdate(conselorId, data, {
+  //   new: true,
+  // });
+
+  try {
+    const schedule = await Conselor.findOne({
+      _id: conselorId,
+      "schedule._id": schedule_id,
+    });
+
+    const updateSchedule = await Conselor.findOneAndUpdate(
+      {
+        _id: conselorId,
+        "schedule._id": schedule_id,
+      },
+      {
+        $set: {
+          "schedule.$.day": day,
+          "schedule.$.time": time,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
+    if (!schedule) {
+      return res.status(400).json({
+        message: "Schedule not found",
+      });
+    }
+
+    res.json({
+      message: "Schedule Updated",
+      data: updateSchedule.schedule.filter((item) => item._id == schedule_id),
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Failed to update schedule",
+      error: error.message,
+    });
+  }
+};
+
+const addPrice = async (req, res) => {
+  const { price, conselor_id } = req.body;
+
+  if (!price) {
     return res.status(400).json({
-      message: "Update Schedule Failed",
+      message: "all fields are required",
     });
   }
 
-  res.json({
-    message: "Schedule Updated",
-    data: editSchedule,
-  });
+  try {
+    const data = await Conselor.findByIdAndUpdate(
+      conselor_id,
+      {
+        price: price,
+      },
+      {
+        new: true,
+      }
+    );
+
+    if (!data) {
+      return res.status(400).json({
+        message: "undefined conselor",
+      });
+    }
+
+    res.status(200).json({
+      status: "OK",
+      message: "Successfully Added Price",
+      data: data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "Terjadi Error",
+      message: error.message,
+    });
+  }
+};
+
+const updatePrice = async (req, res) => {
+  const { price, conselor_id } = req.body;
+
+  if (!price) {
+    return res.status(400).json({
+      message: "all fields are required",
+    });
+  }
+
+  try {
+    const data = await Conselor.findByIdAndUpdate(
+      conselor_id,
+      {
+        price: price,
+      },
+      {
+        new: true,
+      }
+    );
+
+    if (!data) {
+      return res.status(400).json({
+        message: "undefined conselor",
+      });
+    }
+
+    res.status(200).json({
+      status: "OK",
+      message: "Successfully Updated Price",
+      data: data,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "Terjadi Error",
+      message: error.message,
+    });
+  }
 };
 
 module.exports = {
@@ -126,4 +251,6 @@ module.exports = {
   getConselorById,
   saveSchedule,
   updateSchedule,
+  addPrice,
+  updatePrice
 };

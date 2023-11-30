@@ -15,6 +15,16 @@ const rateSchema = new Schema(
   }
 );
 
+const scheduleSchema = new Schema(
+  {
+    day: String,
+    time: String,
+  },
+  {
+    timestamps: true,
+  }
+);
+
 const ConselorSchema = new Schema(
   {
     user_id: {
@@ -22,14 +32,10 @@ const ConselorSchema = new Schema(
       ref: "User",
     },
     spesialisasi: String,
+    price: Number,
     status: String,
     rate: [rateSchema],
-    schedule: [
-      {
-        day: String,
-        time: String,
-      },
-    ],
+    schedule: [scheduleSchema],
   },
   {
     timestamps: true,

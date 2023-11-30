@@ -76,3 +76,46 @@ Content-Type: application/json
     "description" : "pembayaran konseling",
     "amount" : 100000
 }
+
+### ADD SCHEDULE
+
+POST http://localhost:3000/conselors HTTP/1.1
+Content-Type: application/json
+
+{
+"conselor_id" : "65617455f242c60a1e550ae5",
+"day" : "selasa",
+"time" : "10:00-12:00"
+}
+
+### GET BY CONSELOR ID
+GET http://localhost:3000/conselors/65617455f242c60a1e550ae5 HTTP/1.1
+
+### UPDATE SCHEDULE BY ID
+PUT http://localhost:3000/conselors/65617455f242c60a1e550ae5 HTTP/1.1
+Content-Type: application/json
+
+{
+    "schedule_id" : "656842bb55946411230c6f09",
+    "day" : "selasa",
+    "time" : "16:00-17:00"
+}
+
+
+### ADD PRICE BY CONSELOR ID
+POST http://localhost:3000/conselors/price HTTP/1.1
+Content-Type: application/json
+
+{
+    "conselor_id": "6560731aeeb6528b4fbd8bb2",
+    "price": 50000
+}
+
+### UPDATE PRICE BY CONS ID
+PUT http://localhost:3000/conselors/price HTTP/1.1
+Content-Type: application/json
+
+{
+    "conselor_id": "6560731aeeb6528b4fbd8bb2",
+    "price": 100000
+}
