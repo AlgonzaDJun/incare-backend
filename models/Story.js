@@ -1,15 +1,15 @@
-const mongoose = require("../config/mongo");
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const likeSchema = new Schema({
-  user_id: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },
 });
 
 const commentSchema = new Schema({
-  user_id: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },
@@ -19,7 +19,7 @@ const commentSchema = new Schema({
   },
 });
 const storySchema = new Schema({
-  user_id: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: "User",
   },

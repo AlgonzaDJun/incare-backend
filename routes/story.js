@@ -1,12 +1,21 @@
 const { Router } = require("express");
+const {
+  addNewStory,
+  getAllStory,
+  getStoryById,
+  updateStory,
+  deleteStory,
+  updateLike,
+  addComment,
+} = require("../controllers/story.controller");
 
 const router = Router();
 
-router.post("/", addNewSeminar);
-router.get("/", getAllSeminar);
-router.get("/:id", getSeminarById);
-router.put("/:id", updateSeminar);
-router.delete("/:id", deleteSeminar);
-router.put("/:id/like/:userId");
-router.post("/:id/comment");
+router.post("/", addNewStory);
+router.get("/", getAllStory);
+router.get("/:id", getStoryById);
+router.put("/:id", updateStory);
+router.delete("/:id", deleteStory);
+router.put("/:id/like/", updateLike);
+router.put("/:id/comment", addComment);
 module.exports = router;

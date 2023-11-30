@@ -1,11 +1,11 @@
 module.exports = {
-  badRequest: () => {
+  badRequest: (res) => {
     return res.status(400).json({
       status: "error",
       message: "Bad Request",
     });
   },
-  internalServer: () => {
+  internalServer: (res) => {
     return res.status(500).json({
       status: "error",
       message: "Internal Server Error",

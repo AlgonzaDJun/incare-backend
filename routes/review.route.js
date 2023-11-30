@@ -13,5 +13,5 @@ router.delete("/:conselor_id/:id", deleteReviewById)
 
 
 module.exports = {
-    reviewRouter: router,
-}
+  reviewRouter: router,
+};

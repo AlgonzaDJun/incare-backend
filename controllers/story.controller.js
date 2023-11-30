@@ -1,14 +1,19 @@
 const Story = require("../models/Story");
 const { badRequest, internalServer } = require("../utils/error");
-
+const jwt = require("jsonwebtoken");
 module.exports = {
   addNewStory: async (req, res) => {
-    const { userId, content } = req.body;
-    if (!userId || !content) {
-      return badRequest;
+    const header = req.headers.authorization;
+
+    const { content } = req.body;
+    const token = header.split(" ")[1];
+    const decoded = jwt.verify(token, "treasure");
+    const userId = decoded.id;
+    if (!content || !userId) {
+      return badRequest(res);
     }
     try {
-      await Story.create({ user_id: userId, content });
+      await Story.create({ user: userId, content });
       return res.status(201).json({
         status: "OK",
         message: "Create New Story Successfully",
@@ -18,31 +23,47 @@ module.exports = {
     }
   },
   getAllStory: async (req, res) => {
-    try {
-      const stories = await Story.find();
-      return res.status(200).json({
-        status: "OK",
-        message: "Get All Story Successfully",
-        data: stories,
-      });
-    } catch (error) {
-      return internalServer;
-    }
+    const header = req.headers.authorization;
+    const token = header.split(" ")[1];
+    const decoded = jwt.verify(token, "treasure");
+    const userId = decoded.id;
+
+    let stories = await Story.find()
+      .populate({
+        path: "user",
+        select: "username",
+      })
+      .lean();
+
+    stories.forEach((story) => {
+      story.isLike = story.likes.some(
+        (like) => like.user._id.toString() === userId
+      );
+      story.likes = story.likes.length;
+      story.comments = story.comments.length;
+    });
+
+    return res.status(200).json({
+      status: "OK",
+      message: "Get All Story Successfully",
+      data: stories,
+    });
   },
+
   getStoryById: async (req, res) => {
     const { id } = req.params;
     if (!id) {
-      return badRequest;
+      return badRequest(res);
     }
     try {
-      const story = Story.findById(id);
+      const story = await Story.findById(id);
       return res.status(200).json({
         status: "OK",
         message: "Get Data Story Successfully",
         data: story,
       });
     } catch (error) {
-      return internalServer;
+      return internalServer(res);
     }
   },
   updateStory: async (req, res) => {
@@ -75,7 +96,7 @@ module.exports = {
       return res.status(200).json({
         status: "OK",
         message: "Deleted story Successfully",
-        data: seminar,
+        data: story,
       });
     } catch (error) {
       return internalServer;
@@ -83,8 +104,14 @@ module.exports = {
   },
   updateLike: async (req, res) => {
     const { id } = req.params;
+    const header = req.headers.authorization;
+
+    const token = header.split(" ")[1];
+    const decoded = jwt.verify(token, "treasure");
+    const userId = decoded.id;
+
     if (!id || !userId) {
-      return badRequest;
+      return badRequest(res);
     }
     try {
       const story = await Story.findById(id);
@@ -93,38 +120,47 @@ module.exports = {
       }
 
       const likeIndex = story.likes.findIndex((like) =>
-        like.user_id.equals(userId)
+        like.user.equals(userId)
       );
 
       if (likeIndex === -1) {
-        story.likes.push({ user_id: userId });
+        story.likes.push({ user: userId });
       } else {
         story.likes.splice(likeIndex, 1);
       }
 
       await story.save();
+      return res.status(200).json({
+        status: "OK",
+        message: "Update Like Success",
+        story,
+      });
     } catch (error) {
-      return internalServer;
+      return internalServer(res);
     }
   },
-  addComment: async () => {
+  addComment: async (req, res) => {
     const { id } = req.params;
-    const { userId, comment } = req.body;
+    const { comment } = req.body;
+    const header = req.headers.authorization;
 
+    const token = header.split(" ")[1];
+    const decoded = jwt.verify(token, "treasure");
+    const userId = decoded.id;
     try {
-      const story = await Story.findById(storyId);
+      const story = await Story.findById(id);
 
       if (!story) {
         return res.status(404).json({ error: "Story not found" });
       }
-
-      story.comments.push({ user_id: userId, comment });
+      story.comments.push({ user: userId, comment });
       await story.save();
-
       res.json(story);
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
+      res
+        .status(500)
+        .json({ error: error.message, message: "Internal Server Error" });
     }
   },
 };

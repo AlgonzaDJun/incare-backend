@@ -4,7 +4,7 @@ const {
   getAllFaq,
   updateFaq,
   deleteFaq,
-} = require("../controllers/faq");
+} = require("../controllers/faq.controller");
 
 const router = Router();
 
