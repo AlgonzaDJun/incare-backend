@@ -40,7 +40,7 @@ module.exports = {
         (like) => like.user._id.toString() === userId
       );
       story.likes = story.likes.length;
-      story.totalComments = story.comments.length;
+      story.comments = story.comments.length;
     });
 
     return res.status(200).json({
