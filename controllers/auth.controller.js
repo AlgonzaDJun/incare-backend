@@ -77,13 +77,13 @@ const register = async (req, res) => {
     }
 
     const hashPassword = bcrypt.hashSync(data.password, 10);
-    data.password = hashPassword;
+
     const user = await User.create({
       username,
       fullname,
       email,
       no_hp,
-      password,
+      password: hashPassword,
     });
 
     res.status(201).json({
