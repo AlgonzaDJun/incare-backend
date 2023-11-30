@@ -57,7 +57,7 @@ const registConselor = async (req, res) => {
 const getConselorById = async (req, res) => {
   const { id } = req.params;
   try {
-    const conselor = await Conselor.findById(id);
+    const conselor = await Conselor.findById(id).populate("user_id").exec();
 
     if (!conselor) {
       return res.status(400).json({
