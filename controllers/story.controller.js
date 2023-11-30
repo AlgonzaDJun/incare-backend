@@ -66,11 +66,16 @@ module.exports = {
           path: "user",
           select: "username",
         })
+        .populate({
+          path: "comments.user",
+          select: "username",
+        })
         .lean();
       story.isLike = story.likes.some(
         (like) => like.user._id.toString() === userId
       );
       story.likes = story.likes.length;
+
       return res.status(200).json({
         status: "OK",
         message: "Get Data Story Successfully",
