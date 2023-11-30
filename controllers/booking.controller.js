@@ -6,7 +6,11 @@ module.exports = {
   createBooking: async (req, res) => {
     const { conselor_id, tanggal_konseling, media_konseling } = req.body;
 
-    const user_id = "5f8f7f2d0f7a7e2b3c6f8b5d";
+    const user = req.user;
+
+    // const findUser = await User.findById(user.id);
+
+    const user_id = user.id;
 
     const kode_pembayaran = "INCARE-" + user_id + "-" + Date.now();
 
@@ -45,10 +49,7 @@ module.exports = {
           message: "Booking berhasil dibuat",
           data,
         });
-
       } else {
-
-
         const data = await Booking.create({
           user_id,
           conselor_id,
@@ -57,7 +58,6 @@ module.exports = {
           kode_pembayaran,
           status: "pending",
         });
-
 
         res.json({
           message: "Booking berhasil dibuat",

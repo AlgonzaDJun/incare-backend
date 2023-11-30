@@ -18,9 +18,13 @@ module.exports = {
     const user_id = user.id;
 
     try {
-      const external_id = "INCARE-" + user_id + "-" + Date.now();
+      // const external_id = "INCARE-" + user_id + "-" + Date.now();
 
-      const { description, amount } = req.body;
+      const {
+        description,
+        amount,
+        external_id = "INCARE-" + user_id + "-" + Date.now(),
+      } = req.body;
 
       const data2 = {
         amount: amount,
@@ -44,7 +48,7 @@ module.exports = {
             name: "Konseling Online",
             price: amount,
             quantity: 1,
-            referenceId: "12345",
+            referenceId: external_id,
           },
         ],
 
@@ -68,7 +72,7 @@ module.exports = {
       });
     } catch (error) {
       res.status(500).json({
-        message: "Internal server error",
+        message: "Terjadi Error",
         error: error.message,
       });
     }
