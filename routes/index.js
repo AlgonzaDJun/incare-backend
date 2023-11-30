@@ -8,6 +8,8 @@ const { reviewRouter } = require("./review.route");
 const { chatRoute } = require("./chat-route");
 const faqRoute = require("./faq");
 const seminarRoute = require("./seminar");
+const storyRoute = require("./story");
+const authToken = require("../middlewares/auth");
 
 const route = express.Router();
 
@@ -16,7 +18,7 @@ route.get("/", (req, res) => {
 });
 route.use("/faqs", faqRoute);
 route.use("/seminars", seminarRoute);
-
+route.use("/stories", storyRoute);
 route.use("/users", userRoute);
 route.use("/auth", authRoute);
 route.use("/conselors", conselRoute);
@@ -24,7 +26,7 @@ route.use("/quizzes", quizRoute);
 route.use("/hasilquizzes", quizRoute);
 route.use("/booking", bookingRouter);
 route.use("/review", reviewRouter);
-route.use("/chats", chatRoute)
+route.use("/chats", chatRoute);
 
 module.exports = {
   allRouter: route,
