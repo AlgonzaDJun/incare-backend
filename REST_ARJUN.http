@@ -5,7 +5,8 @@ content-type: application/json
 {
     "conselor_id": "5f8f7f2d0f7a7e2b3c6f8b5d",
     "kode_pembayaran": "kjnda123123",
-    "tanggal_konseling": "2020-12-12"
+    "tanggal_konseling": "2020-12-12",
+    "media_konseling": "zoom"
 }
 
 ### GET BOOKING
@@ -20,6 +21,7 @@ GET http://localhost:3000/review/65617455f242c60a1e550ae5 HTTP/1.1
 
 ### POST NEW RATE by conselor id
 POST http://localhost:3000/review/65617455f242c60a1e550ae5 HTTP/1.1
+
 Content-Type: application/json
 
 {
@@ -42,6 +44,8 @@ Content-Type: application/json
 ### DELETE REVIEW BY ID
 DELETE http://localhost:3000/review/65617455f242c60a1e550ae5/656174a6f242c60a1e550af5 HTTP/1.1
 
+
+content-type: application/json
 ### REGISTER 
 POST http://localhost:3000/auth/register HTTP/1.1
 Content-Type: application/json
@@ -61,4 +65,57 @@ Content-Type: application/json
 {
     "email" : "rjx1406@gmail.com",
     "password" : "12345"
+}
+
+### PAYMENT 
+POST http://localhost:3000/payment HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NjE3ZTUyZWZkM2RiMDJjY2U5NTA3YiIsImVtYWlsIjoicmp4MTQwNkBnbWFpbC5jb20iLCJpYXQiOjE3MDA4ODkyNjd9.Mb11ZUNwDllKpOWSKki1Wzq4bX5LANxXUpRqwhKSMIU
+Content-Type: application/json
+
+{
+    "description" : "pembayaran konseling",
+    "amount" : 100000
+}
+
+### ADD SCHEDULE
+
+POST http://localhost:3000/conselors HTTP/1.1
+Content-Type: application/json
+
+{
+"conselor_id" : "65617455f242c60a1e550ae5",
+"day" : "rabu",
+"time" : "19:00-19:30"
+}
+
+### GET BY CONSELOR ID
+GET http://localhost:3000/conselors/65617455f242c60a1e550ae5 HTTP/1.1
+
+### UPDATE SCHEDULE BY ID
+PUT http://localhost:3000/conselors/65617455f242c60a1e550ae5 HTTP/1.1
+Content-Type: application/json
+
+{
+    "schedule_id" : "656848391c17cbb369fc9747",
+    "day" : "rabu",
+    "time" : "20:00-21:00"
+}
+
+
+### ADD PRICE BY CONSELOR ID
+POST http://localhost:3000/conselors/price HTTP/1.1
+Content-Type: application/json
+
+{
+    "conselor_id": "6560731aeeb6528b4fbd8bb2",
+    "price": 50000
+}
+
+### UPDATE PRICE BY CONS ID
+PUT http://localhost:3000/conselors/price HTTP/1.1
+Content-Type: application/json
+
+{
+    "conselor_id": "6560731aeeb6528b4fbd8bb2",
+    "price": 100000
 }

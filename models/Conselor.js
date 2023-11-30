@@ -22,6 +22,7 @@ const ConselorSchema = new Schema(
       ref: "User",
     },
     spesialisasi: String,
+    price: Number,
     status: String,
     rate: [rateSchema],
     schedule: [

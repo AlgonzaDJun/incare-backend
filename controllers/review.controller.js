@@ -48,7 +48,10 @@ module.exports = {
 
   createReviewByConselorId: async (req, res) => {
     const id = req.params.id;
-    const { user_id, rate, comment } = req.body;
+    const { rate, comment } = req.body;
+    const user = req.user;
+    // const findUser = await User.findById(user.id);
+    const user_id = user.id;
 
     if (!rate) {
       return res.status(400).json({
@@ -93,7 +96,13 @@ module.exports = {
     const conselor_id = req.params.conselor_id;
     const review_id = req.params.id;
 
-    const { user_id, rate, comment } = req.body;
+    const user = req.user;
+
+    // const findUser = await User.findById(user.id);
+
+    const user_id = user.id;
+
+    const { rate, comment } = req.body;
 
     if (!rate) {
       return res.status(400).json({
