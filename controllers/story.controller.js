@@ -40,7 +40,7 @@ module.exports = {
         (like) => like.user._id.toString() === userId
       );
       story.likes = story.likes.length;
-      story.comments = story.comments.length;
+      story.totalComments = story.comments.length;
     });
 
     return res.status(200).json({
@@ -56,7 +56,16 @@ module.exports = {
       return badRequest(res);
     }
     try {
-      const story = await Story.findById(id);
+      const story = await Story.findById(id)
+        .populate({
+          path: "user",
+          select: "username",
+        })
+        .lean();
+      story.isLike = story.likes.some(
+        (like) => like.user._id.toString() === userId
+      );
+      story.likes = story.likes.length;
       return res.status(200).json({
         status: "OK",
         message: "Get Data Story Successfully",
