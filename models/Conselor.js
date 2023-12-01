@@ -23,6 +23,7 @@ const ConselorSchema = new Schema(
     },
     spesialisasi: String,
     deskripsi: String,
+    price: Number,
     status: String,
     rate: [rateSchema],
     schedule: [
