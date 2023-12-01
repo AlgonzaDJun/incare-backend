@@ -72,6 +72,62 @@ module.exports = {
     }
   },
 
+  getBookingById: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const data = await Booking.findById(id)
+        .populate("user_id")
+        .populate({
+          path: "conselor_id",
+          populate: {
+            path: "user_id",
+            select: "fullname",
+          },
+        })
+        .exec();
+
+      res.json({
+        message: "Data booking by booking id berhasil didapatkan",
+        data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Terjadi error",
+        error: error.message,
+      });
+    }
+  },
+
+  getBookingByUserId: async (req, res) => {
+    const user = req.user;
+
+    const user_id = user.id;
+
+    try {
+      const data = await Booking.find({ user_id })
+        .populate("user_id")
+        .populate({
+          path: "conselor_id",
+          populate: {
+            path: "user_id",
+            select: "fullname",
+          },
+        })
+        .exec();
+
+      res.json({
+        message: "Data booking by user id berhasil didapatkan",
+        data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Terjadi error",
+        error: error.message,
+      });
+    }
+  },
+
   readBooking: async (req, res) => {
     try {
       const data = await Booking.find().sort({ createdAt: -1 });
