@@ -80,7 +80,9 @@ module.exports = {
 
   getInvoices: async (req, res) => {
     try {
-      const response = await xenditInvoiceClient.getInvoices({});
+      const response = await xenditInvoiceClient.getInvoices({
+        limit: 100,
+      });
       res.status(200).json({
         message: "Berhasil mendapatkan data invoice",
         data: response,
