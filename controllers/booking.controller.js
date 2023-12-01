@@ -38,7 +38,7 @@ module.exports = {
         const data = await Booking.create({
           user_id,
           conselor_id,
-          tanggal_konseling: new Date(),
+          tanggal_konseling: tanggal_konseling,
           media_konseling,
           link_konseling: zoomMeeting,
           kode_pembayaran,
