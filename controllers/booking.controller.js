@@ -150,17 +150,18 @@ module.exports = {
     const { status, tanggal_konseling } = req.body;
 
     try {
-      const data = await Booking.findByIdAndUpdate(
-        { _id: id },
+      const data = await Booking.findOneAndUpdate(
+        { kode_pembayaran: id },
         {
           status,
-          tanggal_konseling,
         }
       );
 
+      const findBook = await Booking.findOne({ kode_pembayaran: id });
+
       res.json({
         message: "Booking berhasil diupdate",
-        data,
+        data: findBook,
       });
     } catch (error) {
       res.status(500).json({

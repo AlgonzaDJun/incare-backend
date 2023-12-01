@@ -58,8 +58,8 @@ module.exports = {
           invoiceExpired: ["sms", "whatsapp", "email"],
         },
 
-        successRedirectUrl: "https://www.google.com",
-        failureRedirectUrl: "https://www.google.com",
+        successRedirectUrl: process.env.FRONTEND_URL + "/history/" + external_id,
+        failureRedirectUrl: process.env.FRONTEND_URL + "/history/" + external_id + "/fail",
       };
 
       const invoice = await xenditInvoiceClient.createInvoice({ data: data2 });
