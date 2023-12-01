@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcrypt")
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const OTP = require("../models/otp");
@@ -24,7 +24,7 @@ const login = async (req, res) => {
     }
 
     //compare password user with hashpassword
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       return res.status(404).json({
@@ -37,8 +37,6 @@ const login = async (req, res) => {
     res.setHeader("authorization", `Bearer ${token}`);
 
     res.status(200).json({
-      status: "OK",
-      message: "User Autenticate Successfully",
       userId: user._id,
       token,
     });
@@ -83,7 +81,8 @@ const register = async (req, res) => {
       fullname,
       email,
       no_hp,
-      password,
+      password: hashPassword,
+      otp
     });
 
     res.status(201).json({

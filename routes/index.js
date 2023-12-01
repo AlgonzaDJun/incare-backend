@@ -15,7 +15,7 @@ route.get("/", (req, res) => {
 route.use("/users", userRoute);
 route.use("/auth", authRoute);
 route.use("/conselors", conselRoute)
-route.use("/quizzes", quizRoute)
+// route.use("/quizzes", quizRoute)
 route.use("/hasilquizzes", quizRoute)
 route.use("/booking", bookingRouter);
 route.use("/review", reviewRouter);
