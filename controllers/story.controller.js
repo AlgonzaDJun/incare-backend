@@ -39,8 +39,6 @@ module.exports = {
       story.isLike = story.likes.some(
         (like) => like.user._id.toString() === userId
       );
-      story.likes = story.likes.length;
-      story.comments = story.comments.length;
     });
 
     return res.status(200).json({
@@ -51,12 +49,31 @@ module.exports = {
   },
 
   getStoryById: async (req, res) => {
+    const header = req.headers.authorization;
+    const token = header.split(" ")[1];
+    const decoded = jwt.verify(token, "treasure");
+    const userId = decoded.id;
+
     const { id } = req.params;
     if (!id) {
       return badRequest(res);
     }
     try {
-      const story = await Story.findById(id);
+      const story = await Story.findById(id)
+        .populate({
+          path: "user",
+          select: "username",
+        })
+        .populate({
+          path: "comments.user",
+          select: "username",
+        })
+        .lean();
+      story.isLike = story.likes.some(
+        (like) => like.user._id.toString() === userId
+      );
+      story.likes = story.likes.length;
+
       return res.status(200).json({
         status: "OK",
         message: "Get Data Story Successfully",

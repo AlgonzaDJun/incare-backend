@@ -5,7 +5,7 @@ const User = require("../models/user");
 // getAllConselor
 const getConselor = async (req, res) => {
   try {
-    const conselorsData = await Conselor.find();
+    const conselorsData = await Conselor.find().populate("user_id").exec();
 
     res.status(200).json({
       status: "OK",
@@ -54,7 +54,7 @@ const registConselor = async (req, res) => {
 const getConselorById = async (req, res) => {
   const { id } = req.params;
   try {
-    const conselor = await Conselor.findById(id);
+    const conselor = await Conselor.findById(id).populate("user_id").exec();
 
     if (!conselor) {
       return res.status(400).json({
@@ -250,5 +250,5 @@ module.exports = {
   saveSchedule,
   updateSchedule,
   addPrice,
-  updatePrice
+  updatePrice,
 };

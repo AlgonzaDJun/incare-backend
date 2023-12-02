@@ -65,7 +65,7 @@ exports.createMeeting = async (topic, duration, start_time) => {
     const content = {
       meeting_url: response_data.join_url,
       password: response_data.password,
-      meetingTime: response_data.start_time,
+      meetingTime: start_time,
       purpose: response_data.topic,
       duration: response_data.duration,
       message: "Success",

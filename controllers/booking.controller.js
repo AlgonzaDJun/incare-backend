@@ -38,7 +38,7 @@ module.exports = {
         const data = await Booking.create({
           user_id,
           conselor_id,
-          tanggal_konseling: new Date(),
+          tanggal_konseling,
           media_konseling,
           link_konseling: zoomMeeting,
           kode_pembayaran,
@@ -53,7 +53,7 @@ module.exports = {
         const data = await Booking.create({
           user_id,
           conselor_id,
-          tanggal_konseling: new Date(),
+          tanggal_konseling,
           media_konseling,
           kode_pembayaran,
           status: "pending",
@@ -64,6 +64,62 @@ module.exports = {
           data,
         });
       }
+    } catch (error) {
+      res.status(500).json({
+        message: "Terjadi error",
+        error: error.message,
+      });
+    }
+  },
+
+  getBookingById: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const data = await Booking.findById(id)
+        .populate("user_id")
+        .populate({
+          path: "conselor_id",
+          populate: {
+            path: "user_id",
+            select: "fullname",
+          },
+        })
+        .exec();
+
+      res.json({
+        message: "Data booking by booking id berhasil didapatkan",
+        data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Terjadi error",
+        error: error.message,
+      });
+    }
+  },
+
+  getBookingByUserId: async (req, res) => {
+    const user = req.user;
+
+    const user_id = user.id;
+
+    try {
+      const data = await Booking.find({ user_id })
+        .populate("user_id")
+        .populate({
+          path: "conselor_id",
+          populate: {
+            path: "user_id",
+            select: "fullname",
+          },
+        })
+        .exec();
+
+      res.json({
+        message: "Data booking by user id berhasil didapatkan",
+        data,
+      });
     } catch (error) {
       res.status(500).json({
         message: "Terjadi error",
@@ -94,17 +150,18 @@ module.exports = {
     const { status, tanggal_konseling } = req.body;
 
     try {
-      const data = await Booking.findByIdAndUpdate(
-        { _id: id },
+      const data = await Booking.findOneAndUpdate(
+        { kode_pembayaran: id },
         {
           status,
-          tanggal_konseling,
         }
       );
 
+      const findBook = await Booking.findOne({ kode_pembayaran: id });
+
       res.json({
         message: "Booking berhasil diupdate",
-        data,
+        data: findBook,
       });
     } catch (error) {
       res.status(500).json({
