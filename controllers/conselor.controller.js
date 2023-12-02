@@ -1,5 +1,5 @@
 const Conselor = require("../models/Conselor");
-const authToken = require("../middlewares/auth");
+const jwt = require("jsonwebtoken")
 const User = require("../models/user");
 
 // getAllConselor
@@ -21,23 +21,20 @@ const getConselor = async (req, res) => {
 };
 
 const registConselor = async (req, res) => {
-  let data = req.body;
+  const header = req.headers.authorization;
+  let {spesialisasi, deskripsi} = req.body
 
-  const { user_id, spesialisasi } = data;
+  const token = header.split(" ")[1]
+  const decoded = jwt.verify(token, "treasure");
+  const userId = decoded.id;
 
-  if (!user_id || !spesialisasi) {
-    return res.status(400).json({
-      message: "all fields are required",
-    });
-  }
+    if(!userId || !spesialisasi || !deskripsi) {
+        return res.status(400).json({
+            message: "all fields are required"
+        })
+    }
 
-  if (!authToken) {
-    return res.status(400).json({
-      message: "invalid token or user",
-    });
-  }
-
-  const newConselor = { user_id, spesialisasi };
+    const newConselor = ({userId, spesialisasi, deskripsi});
   try {
     await Conselor.create(newConselor);
 
@@ -77,6 +74,7 @@ const getConselorById = async (req, res) => {
     });
   }
 };
+
 
 const saveSchedule = async (req, res) => {
   let data = req.body;
