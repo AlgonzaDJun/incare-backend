@@ -22,12 +22,10 @@ route.use("/seminars", seminarRoute);
 route.use("/stories", storyRoute);
 route.use("/users", userRoute);
 route.use("/auth", authRoute);
-route.use("/conselors", conselRoute);
-route.use("/quizzes", quizRoute);
-route.use("/hasilquizzes", quizRoute);
+route.use("/conselors", conselRoute)
+route.use("/hasilquizzes", quizRoute)
 route.use("/booking", bookingRouter);
 route.use("/review", reviewRouter);
-route.use("/chats", chatRoute);
 
 route.use("/payment", paymentRouter )
 
