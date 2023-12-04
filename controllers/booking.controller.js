@@ -130,7 +130,11 @@ module.exports = {
 
   readBooking: async (req, res) => {
     try {
-      const data = await Booking.find().sort({ createdAt: -1 });
+      const data = await Booking.find()
+        .sort({ createdAt: -1 })
+        .populate("conselor_id")
+        .populate("user_id")
+        .exec();
 
       res.json({
         message: "Data booking berhasil didapatkan",

@@ -119,3 +119,13 @@ Content-Type: application/json
     "conselor_id": "6560731aeeb6528b4fbd8bb2",
     "price": 100000
 }
+
+### send pusher
+POST http://localhost:3000/pusher
+Content-Type: application/json
+
+{
+    "message": "komt..",
+    "receiver_id" : "65617e52efd3db02cce9507b",
+    "sender_id" : "65617e6eefd3db02cce9507d"
+}
