@@ -3,6 +3,7 @@ const { registConselor, getConselor, getConselorById, saveSchedule, updateSchedu
 const authToken = require("../middlewares/auth");
 const route = express.Router();
 
+route.post("/", saveSchedule)
 route.post("/asconselor", registConselor)
 route.post("/:id", saveSchedule)
 route.get("/getconselor", getConselor)
