@@ -21,20 +21,20 @@ const getConselor = async (req, res) => {
 };
 
 const registConselor = async (req, res) => {
-  const header = req.headers.authorization;
-  let {spesialisasi, deskripsi} = req.body
+  let {user_id, spesialisasi, deskripsi} = req.body
 
-  const token = header.split(" ")[1]
-  const decoded = jwt.verify(token, "treasure");
-  const userId = decoded.id;
 
-    if(!userId || !spesialisasi || !deskripsi) {
+    if(!user_id || !spesialisasi || !deskripsi) {
         return res.status(400).json({
             message: "all fields are required"
         })
     }
 
-    const newConselor = ({userId, spesialisasi, deskripsi});
+    const newConselor = ({
+      user_id: user_id, 
+      spesialisasi: spesialisasi,
+      deskripsi: deskripsi
+    });
   try {
     await Conselor.create(newConselor);
 
@@ -78,17 +78,18 @@ const getConselorById = async (req, res) => {
 
 const saveSchedule = async (req, res) => {
   let data = req.body;
+  const { id } = req.params;
 
-  const { conselor_id, day, time } = data;
+  const { day, time } = data;
 
-  if (!conselor_id || !day || !time) {
+  if (!day || !time) {
     return res.status(400).json({
       message: "all fields are required",
     });
   }
 
   try {
-    const konselor = await Conselor.findById(conselor_id);
+    const konselor = await Conselor.findById(id);
 
     if (!konselor) {
       return res.status(400).json({
