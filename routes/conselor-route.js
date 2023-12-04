@@ -4,7 +4,7 @@ const authToken = require("../middlewares/auth");
 const route = express.Router();
 
 route.post("/", saveSchedule)
-route.post("/asconselor", authToken, registConselor)
+route.post("/asconselor", registConselor)
 route.get("/getconselor", getConselor)
 route.get("/:id", getConselorById)
 route.put("/price", updatePrice)
