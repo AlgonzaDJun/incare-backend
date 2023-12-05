@@ -27,13 +27,23 @@ module.exports = {
     const token = header.split(" ")[1];
     const decoded = jwt.verify(token, "treasure");
     const userId = decoded.id;
-
-    let stories = await Story.find()
-      .populate({
-        path: "user",
-        select: "username",
-      })
-      .lean();
+    const id = req.query.userId || "";
+    let stories = [];
+    if (id !== "") {
+      stories = await Story.find({ user: { $eq: id } })
+        .populate({
+          path: "user",
+          select: "username",
+        })
+        .lean();
+    } else {
+      stories = await Story.find()
+        .populate({
+          path: "user",
+          select: "username",
+        })
+        .lean();
+    }
 
     stories.forEach((story) => {
       story.isLike = story.likes.some(
@@ -47,7 +57,6 @@ module.exports = {
       data: stories,
     });
   },
-
   getStoryById: async (req, res) => {
     const header = req.headers.authorization;
     const token = header.split(" ")[1];
