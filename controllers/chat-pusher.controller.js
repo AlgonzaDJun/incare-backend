@@ -1,5 +1,6 @@
 const Pusher = require("pusher");
 const Chat = require("../models/Chat");
+const Conselor = require("../models/Conselor");
 
 const pusher = new Pusher({
   appId: "1576805",
@@ -111,6 +112,26 @@ module.exports = {
     } catch (error) {
       res.status(500).json({
         message: "error",
+        error: error.message,
+      });
+    }
+  },
+
+  getKonselorByUserId: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const konselor = await Conselor.findOne({ user_id: id })
+        .populate("user_id")
+        .exec();
+
+      res.json({
+        message: "success",
+        data: konselor,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "error woi",
         error: error.message,
       });
     }
