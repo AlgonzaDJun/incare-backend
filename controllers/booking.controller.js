@@ -128,9 +128,40 @@ module.exports = {
     }
   },
 
+  getBookingByConselorId: async (req, res) => {
+    const { conselor_id } = req.params;
+
+    try {
+      const data = await Booking.find({ conselor_id })
+        .populate("user_id")
+        .populate({
+          path: "conselor_id",
+          populate: {
+            path: "user_id",
+            select: "fullname",
+          },
+        })
+        .exec();
+
+      res.json({
+        message: "Data booking by conselor id berhasil didapatkan",
+        data,
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: "Terjadi error",
+        error: error.message,
+      });
+    }
+  },
+
   readBooking: async (req, res) => {
     try {
-      const data = await Booking.find().sort({ createdAt: -1 });
+      const data = await Booking.find()
+        .sort({ createdAt: -1 })
+        .populate("conselor_id")
+        .populate("user_id")
+        .exec();
 
       res.json({
         message: "Data booking berhasil didapatkan",

@@ -11,6 +11,7 @@ const faqRoute = require("./faq");
 const seminarRoute = require("./seminar");
 const storyRoute = require("./story");
 const authToken = require("../middlewares/auth");
+const { pusherRoute } = require("./pusher.route");
 
 const route = express.Router();
 
@@ -29,7 +30,8 @@ route.use("/booking", bookingRouter);
 route.use("/review", reviewRouter);
 route.use("/chats", chatRoute);
 
-route.use("/payment", paymentRouter);
+route.use("/payment", paymentRouter )
+route.use("/pusher", pusherRoute )
 
 module.exports = {
   allRouter: route,

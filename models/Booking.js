@@ -12,7 +12,7 @@ const bookingSchema = new Schema(
       ref: "Conselor",
     },
     tanggal_konseling: {
-      type: Date,
+      type: Date
     },
     kode_pembayaran: String,
     media_konseling: {
