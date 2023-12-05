@@ -13,7 +13,6 @@ const bookingSchema = new Schema(
     },
     tanggal_konseling: {
       type: Date,
-      default: Date.now,
     },
     kode_pembayaran: String,
     media_konseling: {

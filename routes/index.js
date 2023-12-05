@@ -22,12 +22,12 @@ route.use("/seminars", seminarRoute);
 route.use("/stories", authToken, storyRoute);
 route.use("/users", authToken, userRoute);
 route.use("/auth", authRoute);
-route.use("/conselors", authToken, conselRoute);
+route.use("/conselors", conselRoute);
 route.use("/quizzes", authToken, quizRoute);
 route.use("/hasilquizzes", authToken, quizRoute);
-route.use("/booking", authToken, bookingRouter);
-route.use("/review", authToken, reviewRouter);
-route.use("/chats", authToken, chatRoute);
+route.use("/booking", bookingRouter);
+route.use("/review", reviewRouter);
+route.use("/chats", chatRoute);
 
 route.use("/payment", paymentRouter);
 
