@@ -5,7 +5,7 @@ const route = express.Router();
 
 route.post("/", saveSchedule)
 route.post("/asconselor", registConselor)
-// route.post("/:id", saveSchedule)
+route.post("/:id", saveSchedule)
 route.get("/getconselor", getConselor)
 route.get("/:id", getConselorById)
 route.put("/price", updatePrice)
