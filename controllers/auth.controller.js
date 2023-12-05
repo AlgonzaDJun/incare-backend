@@ -32,7 +32,10 @@ const login = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: user._id, email: user.email }, "treasure");
+    const token = jwt.sign(
+      { id: user._id, email: user.email, type: user.type_user },
+      "treasure"
+    );
 
     res.setHeader("authorization", `Bearer ${token}`);
 
