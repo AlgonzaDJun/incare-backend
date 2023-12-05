@@ -27,10 +27,10 @@ module.exports = {
     const token = header.split(" ")[1];
     const decoded = jwt.verify(token, "treasure");
     const userId = decoded.id;
-    const id = req.query.userId || "";
+    const category = req.query.category || "all";
     let stories = [];
-    if (id !== "") {
-      stories = await Story.find({ user: { $eq: id } })
+    if (category === "profile") {
+      stories = await Story.find({ user: { $eq: userId } })
         .populate({
           path: "user",
           select: "username",
