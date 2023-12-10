@@ -27,7 +27,7 @@ module.exports = {
     const token = header.split(" ")[1];
     const decoded = jwt.verify(token, "treasure");
     const userId = decoded.id;
-    const category = req.query.category || "all";
+    const { category, page, limit } = req.query;
     let stories = [];
     if (category === "profile") {
       stories = await Story.find({ user: { $eq: userId } })
@@ -35,14 +35,22 @@ module.exports = {
           path: "user",
           select: "username",
         })
-        .lean();
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .lean()
+        .exec();
     } else {
       stories = await Story.find()
         .populate({
           path: "user",
           select: "username",
         })
-        .lean();
+        .sort({ createdAt: 1 })
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .lean()
+        .exec();
     }
 
     stories.forEach((story) => {

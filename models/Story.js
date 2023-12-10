@@ -18,18 +18,23 @@ const commentSchema = new Schema({
     required: true,
   },
 });
-const storySchema = new Schema({
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
+const storySchema = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    content: {
+      type: String,
+      required: true,
+    },
+    likes: [likeSchema],
+    comments: [commentSchema],
   },
-  content: {
-    type: String,
-    required: true,
-  },
-  likes: [likeSchema],
-  comments: [commentSchema],
-});
+  {
+    timestamps: true,
+  }
+);
 
 const Story = mongoose.model("Story", storySchema);
 module.exports = Story;
