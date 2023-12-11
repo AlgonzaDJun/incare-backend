@@ -28,8 +28,8 @@ const ConselorSchema = new Schema(
     rate: [rateSchema],
     schedule: [
       {
-        day: String,
-        time: String,
+        begin: Date,
+        end: Date,
       },
     ],
   },

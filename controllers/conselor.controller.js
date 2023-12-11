@@ -1,6 +1,5 @@
 const Conselor = require("../models/Conselor");
-const jwt = require("jsonwebtoken")
-const User = require("../models/user");
+const { badRequest, internalServer } = require("../utils/error");
 
 // getAllConselor
 const getConselor = async (req, res) => {
@@ -21,20 +20,19 @@ const getConselor = async (req, res) => {
 };
 
 const registConselor = async (req, res) => {
-  let {user_id, spesialisasi, deskripsi} = req.body
+  let { user_id, spesialisasi, deskripsi } = req.body;
 
-
-    if(!user_id || !spesialisasi || !deskripsi) {
-        return res.status(400).json({
-            message: "all fields are required"
-        })
-    }
-
-    const newConselor = ({
-      user_id: user_id, 
-      spesialisasi: spesialisasi,
-      deskripsi: deskripsi
+  if (!user_id || !spesialisasi || !deskripsi) {
+    return res.status(400).json({
+      message: "all fields are required",
     });
+  }
+
+  const newConselor = {
+    user_id: user_id,
+    spesialisasi: spesialisasi,
+    deskripsi: deskripsi,
+  };
   try {
     await Conselor.create(newConselor);
 
@@ -75,30 +73,28 @@ const getConselorById = async (req, res) => {
   }
 };
 
-
 const saveSchedule = async (req, res) => {
   let data = req.body;
   const { id } = req.params;
 
-  const { day, time } = data;
+  const { begin, end } = data;
 
-  if (!day || !time) {
+  if (!begin || !end) {
     return res.status(400).json({
       message: "all fields are required",
     });
   }
 
   try {
-    const konselor = await Conselor.findById(id);
-
+    const konselor = await Conselor.findOne({ user_id: id });
     if (!konselor) {
       return res.status(400).json({
         message: "undefined conselor",
       });
     }
 
-    const newSchedule = { day, time };
-
+    const newSchedule = { begin, end };
+    console.log(newSchedule);
     konselor.schedule.push(newSchedule);
 
     await konselor.save();
@@ -121,10 +117,6 @@ const updateSchedule = async (req, res) => {
   const data = req.body;
 
   const { day, time, schedule_id } = data;
-
-  // const editSchedule = await Conselor.findByIdAndUpdate(conselorId, data, {
-  //   new: true,
-  // });
 
   try {
     const schedule = await Conselor.findOne({
@@ -163,6 +155,26 @@ const updateSchedule = async (req, res) => {
       message: "Failed to update schedule",
       error: error.message,
     });
+  }
+};
+
+const deleteSchedule = async (req, res) => {
+  const { userId, id } = req.params;
+  if (!userId || !id) {
+    return badRequest(res);
+  }
+  try {
+    await Conselor.findOneAndUpdate(
+      { user_id: userId },
+      { $pull: { schedule: { _id: id } } }
+    );
+
+    return res.status(200).json({
+      status: "OK",
+      message: "Delete Schedule Successfully",
+    });
+  } catch (error) {
+    return internalServer(res);
   }
 };
 
@@ -252,4 +264,5 @@ module.exports = {
   updateSchedule,
   addPrice,
   updatePrice,
+  deleteSchedule,
 };

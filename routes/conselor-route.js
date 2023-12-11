@@ -1,16 +1,24 @@
 const express = require("express");
-const { registConselor, getConselor, getConselorById, saveSchedule, updateSchedule, addPrice, updatePrice } = require("../controllers/conselor.controller");
-const authToken = require("../middlewares/auth");
+const {
+  registConselor,
+  getConselor,
+  getConselorById,
+  saveSchedule,
+  updateSchedule,
+  addPrice,
+  updatePrice,
+  deleteSchedule,
+} = require("../controllers/conselor.controller");
 const route = express.Router();
 
-route.post("/", saveSchedule)
-route.post("/asconselor", registConselor)
-route.post("/:id", saveSchedule)
-route.get("/getconselor", getConselor)
-route.get("/:id", getConselorById)
-route.put("/price", updatePrice)
-route.put("/:id", updateSchedule)
-route.post("/price", addPrice)
+route.post("/asconselor", registConselor);
+route.post("/:id", saveSchedule);
+route.get("/getconselor", getConselor);
+route.get("/:id", getConselorById);
+route.put("/price", updatePrice);
+route.put("/:id", updateSchedule);
+route.post("/price", addPrice);
+route.delete("/:userId/schedule/:id", deleteSchedule);
 
 module.exports = {
   conselRoute: route,
