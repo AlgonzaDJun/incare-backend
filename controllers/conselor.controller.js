@@ -1,18 +1,29 @@
 const Conselor = require("../models/Conselor");
+const User = require("../models/user");
 const { badRequest, internalServer } = require("../utils/error");
 
 // getAllConselor
 const getConselor = async (req, res) => {
   try {
+    const { status } = req.query;
+    if (status === "accepted") {
+      const conselorsData = await Conselor.find({ status: "accepted" })
+        .populate("user_id")
+        .exec();
+      return res.status(200).json({
+        status: "OK",
+        message: "Get All Counselors Successfully",
+        counselors: conselorsData,
+      });
+    }
     const conselorsData = await Conselor.find().populate("user_id").exec();
-
-    res.status(200).json({
+    return res.status(200).json({
       status: "OK",
       message: "Get All Counselors Successfully",
       counselors: conselorsData,
     });
   } catch (error) {
-    res.status(500).json({
+    return res.status(500).json({
       status: "Error",
       message: "Internal Server Erro",
     });
@@ -20,7 +31,7 @@ const getConselor = async (req, res) => {
 };
 
 const registConselor = async (req, res) => {
-  let { user_id, spesialisasi, deskripsi } = req.body;
+  let { user_id, spesialisasi, deskripsi, price } = req.body;
 
   if (!user_id || !spesialisasi || !deskripsi) {
     return res.status(400).json({
@@ -32,6 +43,7 @@ const registConselor = async (req, res) => {
     user_id: user_id,
     spesialisasi: spesialisasi,
     deskripsi: deskripsi,
+    price: price,
   };
   try {
     await Conselor.create(newConselor);
@@ -158,6 +170,29 @@ const updateSchedule = async (req, res) => {
   }
 };
 
+const updateStatusConselor = async (req, res) => {
+  const { status } = req.body;
+  const { id } = req.params;
+  if (!status || !id) {
+    return badRequest(res);
+  }
+  try {
+    const conselor = await Conselor.findByIdAndUpdate(id, { status });
+    if (status === "accepted") {
+      await User.findByIdAndUpdate(conselor.user_id, { type_user: "conselor" });
+    }
+    if (status === "rejected") {
+      await User.findByIdAndUpdate(conselor.user_id, { type_user: "user" });
+    }
+    return res.status(200).json({
+      status: "OK",
+      message: "Success Update Status Conselor",
+    });
+  } catch (error) {
+    return internalServer(res);
+  }
+};
+
 const deleteSchedule = async (req, res) => {
   const { userId, id } = req.params;
   if (!userId || !id) {
@@ -265,4 +300,5 @@ module.exports = {
   addPrice,
   updatePrice,
   deleteSchedule,
+  updateStatusConselor,
 };

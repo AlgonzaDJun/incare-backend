@@ -44,6 +44,10 @@ module.exports = {
           kode_pembayaran,
           status: "pending",
         });
+        await Conselor.updateOne(
+          { _id: conselor_id },
+          { $pull: { schedule: { begin: tanggal_konseling } } }
+        );
 
         res.json({
           message: "Booking berhasil dibuat",
@@ -58,6 +62,10 @@ module.exports = {
           kode_pembayaran,
           status: "pending",
         });
+        await Conselor.updateOne(
+          { _id: conselor_id },
+          { $pull: { schedule: { begin: tanggal_konseling } } }
+        );
 
         res.json({
           message: "Booking berhasil dibuat",

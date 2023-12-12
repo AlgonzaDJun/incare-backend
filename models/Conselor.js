@@ -24,7 +24,10 @@ const ConselorSchema = new Schema(
     spesialisasi: String,
     deskripsi: String,
     price: Number,
-    status: String,
+    status: {
+      type: String,
+      default: "pending",
+    },
     rate: [rateSchema],
     schedule: [
       {

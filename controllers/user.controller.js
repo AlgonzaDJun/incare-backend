@@ -27,7 +27,7 @@ module.exports = {
         const conselor = await Conselor.findOne(
           { user_id: userId },
           "spesialisasi rate schedule price"
-        ).populate("user_id", "username fullname bio image_url");
+        ).populate("user_id", "username email no_hp fullname bio image_url");
         return res.status(200).json({
           status: "OK",
           message: "Get Profile User Successfully",
@@ -36,7 +36,7 @@ module.exports = {
       }
       const user = await User.findById(
         userId,
-        "username fullname bio image_url"
+        "username email no_hp fullname bio image_url"
       );
       return res.status(200).json({
         status: "OK",
@@ -52,7 +52,6 @@ module.exports = {
     const token = header.split(" ")[1];
     const decoded = jwt.verify(token, "treasure");
     const userId = decoded.id;
-    const { fullname, bio } = req.body;
     if (!req.file) {
       return res.status(400).send("No file uploaded.");
     }
@@ -63,8 +62,6 @@ module.exports = {
       });
       const imageUrl = uploadResponse.name;
       await User.findByIdAndUpdate(userId, {
-        fullname,
-        bio,
         image_url: imageUrl,
       });
       return res.status(200).json({
