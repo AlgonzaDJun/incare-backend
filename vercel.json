@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.js", // Entry point aplikasi Express.js
+      "use": "@vercel/node" // Gunakan runtime Node.js
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)", // Arahkan semua request ke index.js
+      "dest": "index.js"
+    }
+  ]
+}
